@@ -1,6 +1,6 @@
 <template>
 	<view class="z-table">
-		<view class="z-table-main" :style="tableHeight ? {height: tableHeight + 'px'} : ''">
+		<view class="z-table-main" :style="compluteHeight">
 			<!-- 如果是安卓 -->
 			<scroll-view class="z-table-container" :scroll-x="true" :scroll-y="true" v-if="system == 'android'">
 				<view class="z-table-title">
@@ -108,6 +108,11 @@
 				nowSortKey: '',
 				sortType: 'desc' // asc/desc 升序/降序
 			};
+		},
+		computed: {
+			compluteHeight() {
+				return this.tableHeight ? 'height: ' + this.tableHeight + 'px' : ''
+			}
 		},
 		props: {
 			tableData: {
@@ -337,23 +342,27 @@
 		background: #fff;
 		border: solid 2upx #ccc;
 		font-size: $uni-font-size-sm;
+		box-sizing: border-box;
 
 		.z-table-main {
 			height: 100%;
+			box-sizing: border-box;
 		}
 
 		.z-table-container {
 			height: 100%;
 			overflow: scroll;
+			box-sizing: border-box;
 		}
 
 		.z-table-title {
 			position: sticky;
 			top: 0;
-			border-bottom: solid 1upx #dbdbdb;
+			height: 64upx;
 			z-index: 1;
 
 			.z-table-title-item {
+				border-bottom: solid 1upx #dbdbdb;
 				background: #f8f8f8;
 			}
 
@@ -362,6 +371,7 @@
 				top: 0;
 				left: 0;
 				border-right: solid 1upx #dbdbdb;
+				box-sizing: border-box;
 			}
 		}
 
@@ -370,20 +380,23 @@
 			display: flex;
 			width: fit-content;
 			white-space: nowrap;
+			box-sizing: border-box;
 
 			.z-table-title-item,
 			.z-table-container-col {
 				@include ellipsis();
 				display: inline-block;
-				padding: 2upx 16upx;
+				padding: 0 16upx;
 				height: 64upx;
 				line-height: 64upx;
+				box-sizing: border-box;
 			}
 		}
 
 		.z-table-container-row {
 			z-index: 0;
 			border-bottom: solid 1upx #f4f4f4;
+			box-sizing: border-box;
 		}
 
 		.z-table-stick-side {
@@ -391,6 +404,7 @@
 			left: 0;
 			background: #f7f9ff;
 			border-right: solid 1upx #dbdbdb;
+			box-sizing: border-box;
 		}
 
 		.z-table-bottom {
@@ -403,9 +417,11 @@
 			background: #4298f7 !important;
 			color: #fff !important;
 			white-space: nowrap;
+			box-sizing: border-box;
 
 			.z-table-stick-side {
 				background: #4298f7 !important;
+				box-sizing: border-box;
 			}
 
 			.z-table-bottom-col {
@@ -414,21 +430,25 @@
 				justify-content: center;
 				text-align: center;
 				padding: 16upx;
+				box-sizing: border-box;
 			}
 
 			.z-table-bottom-text {
 				line-height: 100%;
+				box-sizing: border-box;
 			}
 
 			.z-table-bottom-text-title {
 				margin-bottom: 10upx;
 				font-size: 22upx;
 				color: #aad0ff;
+				box-sizing: border-box;
 			}
 
 			.sum {
 				margin-left: 14upx;
 				font-size: 28upx;
+				box-sizing: border-box;
 			}
 		}
 

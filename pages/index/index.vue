@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
+		<image class="logo" src="/static/z-table/z-table.png"></image>
 		<view class="version">v 1.0.0</view>
 		<view class="title">
 			注意:
@@ -207,7 +207,7 @@
 						        template: "我叫 #name#",
 						        names: ["name"]
 						    },
-						    width: 100
+						    width: 200
 						},{
 						    title: '性别',
 						    key: 'gender',
@@ -336,7 +336,7 @@
 		<view class="example-block">
 			<view class="example-title block-title">自定义高度示例</view>
 			<view class="table">
-				<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="100"></z-table>
+				<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="130"></z-table>
 			</view>
 			<view class="example-title">code:</view>
 			<scroll-view scroll-x class="codes">
@@ -457,7 +457,7 @@
 </template>
 
 <script>
-import zTable from '../../component/z-table.vue';
+import zTable from '../../components/z-table/z-table.vue';
 
 export default {
 	data() {
@@ -591,7 +591,7 @@ export default {
 				    template: "我叫 #name#",
 				    names: ["name"]
 				},
-				width: 100
+				width: 200
 			},{
 				title: '性别',
 				key: 'gender',
@@ -715,7 +715,7 @@ export default {
 					width: 400
 				}
 			],
-			heightHtml: '<z-table :tableData="heightTableData" :columns="heightColumns"></z-table>',
+			heightHtml: '<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="130"></z-table>',
 			// 开启排序
 			sortTableData: [
 				{
