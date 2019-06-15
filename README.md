@@ -20,3 +20,6 @@ uni-app的表格插件
 ---
 #### function: 
 ##### resetSort | 调用后重置排序 *注意:不会触发sort事件
+
+### 效果预览
+![微信小程序二维码](https://mp.weixin.qq.com/wxopen/qrcode?action=show&type=2&fakeid=3839115583&token=1672400506)
