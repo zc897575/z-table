@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "z-table使用示例",
-  "usingComponents": {
-    "z-table": "/components/z-table/z-table"
-  }
-}
