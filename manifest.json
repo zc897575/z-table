@@ -57,7 +57,9 @@
         /* 小程序特有相关 */
         "appid" : "wx2601089995dbaa81",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "minified" : true,
+            "postcss" : false
         },
         "usingComponents" : true
     }
