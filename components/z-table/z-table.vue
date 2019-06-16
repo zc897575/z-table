@@ -1,43 +1,7 @@
 <template>
 	<view class="z-table">
 		<view class="z-table-main" :style="compluteHeight">
-			<!-- 如果是安卓 -->
-			<scroll-view class="z-table-container" :scroll-x="true" :scroll-y="true" v-if="system == 'android'">
-				<view class="z-table-title">
-					<view class="z-table-title-item" :class="{ 'z-table-stick-side': stickSide && index == 0 }" :style="{ width: item.width ? item.width + 'rpx' : '200rpx' }"
-					 v-for="(item, index) in columns" :key="index" @click="sort(item.key, index)">
-						{{ item.title }}
-						<view v-if="item.hasOwnProperty('key') && item.hasOwnProperty('sort') && tableData.length" class="sort">
-							<view class="up-arrow" :class="{ action: nowSortKey == item.key && sortType == 'asc' }"></view>
-							<view class="down-arrow" :class="{ action: nowSortKey == item.key && sortType == 'desc' }"></view>
-						</view>
-					</view>
-				</view>
-				<view v-if="tableData.length" class="z-table-container-row" :class="{ 'z-table-has-bottom': showBottomSum }" v-for="(row, iIndex) in tableData" :key="iIndex">
-					<view class="z-table-container-col" :class="{ 'z-table-stick-side': stickSide && jIndex == 0 }" :style="{ width: col.width ? col.width + 'rpx' : '200rpx' }"
-					 v-for="(col, jIndex) in columns" :key="jIndex">
-						<view v-if="!col.isLink" v-html="getRowContent(row, col)"></view>
-						<!-- #ifdef H5 -->
-						<router-link v-else-if="setUrl(row, col).indexOf('http') != 0" :to="setUrl(row, col)" v-html="getRowContent(row, col)"></router-link>
-						<a v-else :href="setUrl(row, col)" v-html="getRowContent(row, col)"></a>
-						<!-- #endif -->
-						<!-- #ifndef H5 -->
-						<navigator v-else :url="setUrl(row, col)" v-html="getRowContent(row, col)"></navigator>
-						<!-- #endif -->
-					</view>
-				</view>
-				<view class="z-table-bottom" v-if="showBottomSum && tableData.length">
-					<view class="z-table-bottom-col" :class="{ 'z-table-stick-side': stickSide && sumIndex == 0 }" :style="{ width: sumCol.width ? sumCol.width + 'rpx' : '200rpx' }"
-					 v-for="(sumCol, sumIndex) in columns" :key="sumIndex">
-						<view class="z-table-bottom-text">
-							<view v-if="sumIndex != 0" class="z-table-bottom-text-title">{{ sumCol.title }}</view>
-							<text :class="{ sum: sumIndex == 0 }">{{ sumIndex == 0 ? '总计' : dosum(sumCol.key) }}</text>
-						</view>
-					</view>
-				</view>
-			</scroll-view>
-			<!-- ios或其他 -->
-			<view class="z-table-container" v-else>
+			<scroll-view class="z-table-container" scroll-y scroll-x>
 				<view class="z-table-title">
 					<view class="z-table-title-item" :class="{ 'z-table-stick-side': stickSide && index == 0 }" :style="{ width: item.width ? item.width + 'rpx' : '200rpx' }"
 					 v-for="(item, index) in columns" :key="index" @click="sort(item.key, index)">
@@ -70,7 +34,7 @@
 						</view>
 					</view>
 				</view>
-			</view>
+			</scroll-view>
 			<view v-if="tableData.length == 0" class="table-empty">
 				<!-- image v-if="!showLoading" class="empty-img" src="../static/empty.png"></image -->
 				<view v-html="showLoading ? '加载中...' : emptyText"></view>
@@ -111,7 +75,7 @@
 		},
 		computed: {
 			compluteHeight() {
-				return this.tableHeight ? 'height: ' + this.tableHeight + 'px' : ''
+				return this.tableHeight ? 'height: ' + uni.upx2px(this.tableHeight) + 'px' : ''
 			}
 		},
 		props: {
