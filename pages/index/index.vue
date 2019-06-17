@@ -336,7 +336,7 @@
 		<view class="example-block">
 			<view class="example-title block-title">自定义高度示例</view>
 			<view class="table">
-				<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="130"></z-table>
+				<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="192"></z-table>
 			</view>
 			<view class="example-title">code:</view>
 			<scroll-view scroll-x class="codes">
@@ -381,7 +381,7 @@
 				<view class="explain-title">参数</view>
 				<view class="explain-context">
 					<view class="explain">其他参数一样</view>
-					<view class="explain">tableHeight [Number] <text class="explain-text">表格的高度超出会开启滚动, 注意: 高度最小值为130</text></view>
+					<view class="explain">tableHeight [Number] <text class="explain-text">表格的高度超出会开启滚动, 注意: 高度最小值为三行的高度=192(小于这个高度小程序端会出现顶部标题不固定在顶部的问题)</text></view>
 				</view>
 			</view>
 		</view>
@@ -715,7 +715,7 @@ export default {
 					width: 400
 				}
 			],
-			heightHtml: '<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="130"></z-table>',
+			heightHtml: '<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="192"></z-table>',
 			// 开启排序
 			sortTableData: [
 				{
