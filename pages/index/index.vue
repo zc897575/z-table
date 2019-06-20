@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<image class="logo" src="/static/z-table/z-table.png"></image>
-		<view class="version">v 1.0.1</view>
+		<view class="version">v 1.0.2</view>
 		<view class="title">
 			注意:
 			<view>本示例必须使用sass插件,请在HbuildX的工具-插件安装中安装scss/sass编译插件</view>

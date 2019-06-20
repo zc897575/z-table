@@ -83,7 +83,7 @@ import Vue from 'vue';
 export default {
 	data() {
 		return {
-			version: '1.0.1',
+			version: '1.0.2',
 			system: 'android',
 			nowSortKey: '',
 			sortType: 'desc', // asc/desc 升序/降序
