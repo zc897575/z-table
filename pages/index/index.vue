@@ -1,10 +1,14 @@
 <template>
 	<view class="content">
 		<image class="logo" src="/static/z-table/z-table.png"></image>
-		<view class="version">v 1.0.2</view>
+		<view class="version">v 1.0.3</view>
 		<view class="title">
 			注意:
 			<view>本示例必须使用sass插件,请在HbuildX的工具-插件安装中安装scss/sass编译插件</view>
+			<text space="ensp">
+				1.0.3更新内容：
+				    数据高度小于视窗高度的时候，底部统计不再显示跟随最后一条数据显示，而是沉在视窗底部
+			</text>
 		</view>
 		<view class="example-block">
 			<view class="example-title block-title">基础使用示例</view>
@@ -19,34 +23,34 @@
 					
 					js代码:
 					baseTableData: [{
-						    name: '张三',
+						    name: "张三",
 						    age: 18,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '赵四',
+						    name: "赵四",
 						    age: 16,
-						    gender: '女'
+						    gender: "女"
 						},{
-						    name: '王五',
+						    name: "王五",
 						    age: 20,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '李六',
+						    name: "李六",
 						    age: 18,
-						    gender: '女'
+						    gender: "女"
 						}],
 						
 					baseColumns: [{
-						    title: '姓名',
-						    key: 'name',
+						    title: "姓名",
+						    key: "name",
 						    width: 100
 						},{
-						    title: '性别',
-						    key: 'gender',
+						    title: "性别",
+						    key: "gender",
 						    width: 100
 						},{
-						    title: '年龄',
-						    key: 'age',
+						    title: "年龄",
+						    key: "age",
 						    width: 100
 						}]
 				</text>
@@ -78,34 +82,34 @@
 					
 					js代码:
 					stickSideTableData: [{
-						    name: '张三',
+						    name: "张三",
 						    age: 18,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '赵四',
+						    name: "赵四",
 						    age: 16,
-						    gender: '女'
+						    gender: "女"
 						},{
-						    name: '王五',
+						    name: "王五",
 						    age: 20,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '李六',
+						    name: "李六",
 						    age: 18,
-						    gender: '女'
+						    gender: "女"
 						}],
 						
 					stickSideColumns: [{
-						    title: '姓名',
-						    key: 'name',
+						    title: "姓名",
+						    key: "name",
 						    width: 100
 						},{
-						    title: '性别',
-						    key: 'gender',
+						    title: "性别",
+						    key: "gender",
 						    width: 400
 						},{
-						    title: '年龄',
-						    key: 'age',
+						    title: "年龄",
+						    key: "age",
 						    width: 400
 						}]
 				</text>
@@ -131,34 +135,34 @@
 					
 					js代码:
 					showBottomSumTableData: [{
-						    name: '张三',
+						    name: "张三",
 						    age: 18,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '赵四',
+						    name: "赵四",
 						    age: 16,
-						    gender: '女'
+						    gender: "女"
 						},{
-						    name: '王五',
+						    name: "王五",
 						    age: 20,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '李六',
+						    name: "李六",
 						    age: 18,
-						    gender: '女'
+						    gender: "女"
 						}],
 						
 					showBottomSumColumns: [{
-						    title: '姓名',
-						    key: 'name',
+						    title: "姓名",
+						    key: "name",
 						    width: 100
 						},{
-						    title: '性别',
-						    key: 'gender',
+						    title: "性别",
+						    key: "gender",
 						    width: 400
 						},{
-						    title: '年龄',
-						    key: 'age',
+						    title: "年龄",
+						    key: "age",
 						    width: 400
 						}]
 				</text>
@@ -184,37 +188,37 @@
 					
 					js代码:
 					customTableData: [{
-						    name: '张三',
+						    name: "张三",
 						    age: 18,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '赵四',
+						    name: "赵四",
 						    age: 16,
-						    gender: '女'
+						    gender: "女"
 						},{
-						    name: '王五',
+						    name: "王五",
 						    age: 20,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '李六',
+						    name: "李六",
 						    age: 18,
-						    gender: '女'
+						    gender: "女"
 						}],
 						
 					customColumns: [{
-						    title: '姓名',
+						    title: "姓名",
 						    format: {
 						        template: "我叫 #name#",
 						        names: ["name"]
 						    },
 						    width: 200
 						},{
-						    title: '性别',
-						    key: 'gender',
+						    title: "性别",
+						    key: "gender",
 						    width: 400
 						},{
-						    title: '年龄',
-						    key: 'age',
+						    title: "年龄",
+						    key: "age",
 						    width: 400
 						}]
 				</text>
@@ -248,34 +252,38 @@
 					
 					js代码:
 					isLinkTableData: [{
-						    name: '张三',
+						    name: "张三",
 						    age: 18,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '赵四',
+						    name: "赵四",
 						    age: 16,
-						    gender: '女'
+						    gender: "女"
 						},{
-						    name: '王五',
+						    name: "王五",
 						    age: 20,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '李六',
+						    name: "李六",
 						    age: 18,
-						    gender: '女'
+						    gender: "女"
 						}],
 						
 					isLinkColumns: [{
-						    title: '姓名',
-						    key: 'name',
+						    title: "姓名",
+						    key: "name",
+						    isLink: {
+						        url: "https://www.baidu.com",
+						        params: ["from|name"]
+						    },
+						    width: 100							
+						},{
+						    title: "性别",
+						    key: "gender",
 						    width: 100
 						},{
-						    title: '性别',
-						    key: 'gender',
-						    width: 100
-						},{
-						    title: '年龄',
-						    key: 'age',
+						    title: "年龄",
+						    key: "age",
 						    width: 100
 						}]
 				</text>
@@ -292,7 +300,7 @@
 				<view class="explain-title">isLink具体参数</view>
 				<view class="explain-context">
 					<view class="explain">url [String] <text class="explain-text">链接地址, 在H5上地址带http被认为是外部链接</text></view>
-					<view class="explain">params [Array] <text class="explain-text">地址带的参数[key|value, key|value, ...]每一项都是key和value以'|'链接,如果不带'|'默认键值同名 value就是tableData中的字段名</text></view>
+					<view class="explain">params [Array] <text class="explain-text">地址带的参数[key|value, key|value, ...]每一项都是key和value以"|"链接,如果不带"|"默认键值同名 value就是tableData中的字段名</text></view>
 				</view>
 			</view>
 		</view>
@@ -310,16 +318,16 @@
 					js代码:
 					emptyTableData:  [],						
 					emptyColumns: [{
-						    title: '姓名',
-						    key: 'name',
+						    title: "姓名",
+						    key: "name",
 						    width: 100
 						},{
-						    title: '性别',
-						    key: 'gender',
+						    title: "性别",
+						    key: "gender",
 						    width: 100
 						},{
-						    title: '年龄',
-						    key: 'age',
+						    title: "年龄",
+						    key: "age",
 						    width: 100
 						}]
 				</text>
@@ -346,33 +354,33 @@
 					
 					js代码:
 					heightTableData: [{
-						    name: '张三',
+						    name: "张三",
 						    age: 18,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '赵四',
+						    name: "赵四",
 						    age: 16,
-						    gender: '女'
+						    gender: "女"
 						},{
-						    name: '王五',
+						    name: "王五",
 						    age: 20,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '李六',
+						    name: "李六",
 						    age: 18,
-						    gender: '女'
+						    gender: "女"
 						}],						
 					heightColumns: [{
-						    title: '姓名',
-						    key: 'name',
+						    title: "姓名",
+						    key: "name",
 						    width: 100
 						},{
-						    title: '性别',
-						    key: 'gender',
+						    title: "性别",
+						    key: "gender",
 						    width: 100
 						},{
-						    title: '年龄',
-						    key: 'age',
+						    title: "年龄",
+						    key: "age",
 						    width: 100
 						}]
 				</text>
@@ -398,35 +406,35 @@
 					
 					js代码:
 					sortTableData: [{
-						    name: '张三',
+						    name: "张三",
 						    age: 18,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '赵四',
+						    name: "赵四",
 						    age: 16,
-						    gender: '女'
+						    gender: "女"
 						},{
-						    name: '王五',
+						    name: "王五",
 						    age: 20,
-						    gender: '男'
+						    gender: "男"
 						},{
-						    name: '李六',
+						    name: "李六",
 						    age: 18,
-						    gender: '女'
+						    gender: "女"
 						}],
 						
 					sortColumns: [{
-						    title: '姓名',
-						    key: 'name',
+						    title: "姓名",
+						    key: "name",
 						    width: 100
 						},{
-						    title: '性别',
-						    key: 'gender',
+						    title: "性别",
+						    key: "gender",
 						    sort: true,
 						    width: 100
 						},{
-						    title: '年龄',
-						    key: 'age',
+						    title: "年龄",
+						    key: "age",
 						    sort: true,
 						    width: 100
 						}]
@@ -442,7 +450,7 @@
 					<view class="explain">onSort [Function] <text class="explain-text">向上触发sort事件传递参数 [Object]: 
 					{
 				        key: 列的字段名, 
-				        type: 正序'asc'/倒序'desc'
+				        type: 正序"asc"/倒序"desc"
 					}
 					最终排序需要到外部自行实现
 					</text></view>
@@ -453,182 +461,240 @@
 				</view>
 			</view>
 		</view>
+		<view class="example-block">
+			<view class="example-title block-title">开启所有功能</view>
+			<view class="table">
+				<z-table :tableData="finaleTableData" :columns="finaleColumns" @onSort="doSort" stickSide showBottomSum emptyText='设置了showLoading=false才会看到我' :tableHeight='600'></z-table>
+			</view>
+			<view class="example-title">code:</view>
+			<scroll-view scroll-x class="codes">
+				<text space="ensp">
+					html代码:
+					{{finaleHtml}}
+					
+					js代码:
+					sortTableData: [{
+						    name: "张三",
+						    age: 18,
+						    gender: "男"
+						},{
+						    name: "赵四",
+						    age: 16,
+						    gender: "女"
+						},{
+						    name: "王五",
+						    age: 20,
+						    gender: "男"
+						},{
+						    name: "李六",
+						    age: 18,
+						    gender: "女"
+						},
+						...
+						],
+						
+					sortColumns: [{
+						    title: "姓名",
+						    key: "name",
+						    format: {
+						        template: "我叫 #name#",
+						        names: ["name"]
+						    },
+						    isLink: {
+						        url: "https://www.baidu.com",
+						        params: ["from|name"]
+						    },
+						    width: 200
+						},{
+						    title: "性别",
+						    key: "gender",
+						    sort: true,
+						    width: 100
+						},{
+						    title: "年龄",
+						    key: "age",
+						    sort: true,
+						    width: 100
+						}]
+				</text>
+			</scroll-view>
+		</view>
 	</view>
 </template>
 
 <script>
-import zTable from '../../components/z-table/z-table.vue';
+import zTable from "../../components/z-table/z-table.vue";
 
 export default {
 	data() {
 		return {
-			title: 'zTable使用示例',
+			title: "zTable使用示例",
 			baseTableData: [
 				{
-					name: '张三',
+					name: "张三",
 					age: 18,
-					gender: '男'
+					gender: "男"
 				},
 				{
-					name: '赵四',
+					name: "赵四",
 					age: 16,
-					gender: '女'
+					gender: "女"
 				},
 				{
-					name: '王五',
+					name: "王五",
 					age: 20,
-					gender: '男'
+					gender: "男"
 				},
 				{
-					name: '李六',
+					name: "李六",
 					age: 18,
-					gender: '女'
+					gender: "女"
 				}
 			],
 			baseColumns: [
 				{
-					title: '姓名',
-					key: 'name',
+					title: "姓名",
+					key: "name",
 					width: 100
 				},
 				{
-					title: '性别',
-					key: 'gender',
+					title: "性别",
+					key: "gender",
 					width: 400
 				},
 				{
-					title: '年龄',
-					key: 'age',
+					title: "年龄",
+					key: "age",
 					width: 400
 				}
 			],
-			baseHtml: '<z-table :tableData="baseTableData" :columns="baseColumns"></z-table>',
+			baseHtml: "<z-table :tableData='baseTableData' :columns='baseColumns'></z-table>",
 			// 固定左侧
 			stickSideTableData: [{
-				name: '张三',
+				name: "张三",
 				age: 18,
-				gender: '男'
+				gender: "男"
 			},{
-				name: '赵四',
+				name: "赵四",
 				age: 16,
-				gender: '女'
+				gender: "女"
 			},{
-				name: '王五',
+				name: "王五",
 				age: 20,
-				gender: '男'
+				gender: "男"
 			},{
-				name: '李六',
+				name: "李六",
 				age: 18,
-				gender: '女'
+				gender: "女"
 			}],
 			stickSideColumns: [{
-				title: '姓名',
-				key: 'name',
+				title: "姓名",
+				key: "name",
 				width: 100
 			},{
-				title: '性别',
-				key: 'gender',
+				title: "性别",
+				key: "gender",
 				width: 400
 			},{
-				title: '年龄',
-				key: 'age',
+				title: "年龄",
+				key: "age",
 				width: 400
 			}],
-			stickSideHtml: '<z-table :tableData="stickSideTableData" :columns="stickSideColumns" stickSide="true"></z-table>',
+			stickSideHtml: "<z-table :tableData='stickSideTableData' :columns='stickSideColumns' stickSide='true'></z-table>",
 			// 底部统计表格
 			showBottomSumTableData: [{
-				name: '张三',
+				name: "张三",
 				age: 18,
-				gender: '男'
+				gender: "男"
 			},{
-				name: '赵四',
+				name: "赵四",
 				age: 16,
-				gender: '女'
+				gender: "女"
 			},{
-				name: '王五',
+				name: "王五",
 				age: 20,
-				gender: '男'
+				gender: "男"
 			},{
-				name: '李六',
+				name: "李六",
 				age: 18,
-				gender: '女'
+				gender: "女"
 			}],
 			showBottomSumColumns: [{
-				title: '姓名',
-				key: 'name',
+				title: "姓名",
+				key: "name",
 				width: 100
 			},{
-				title: '性别',
-				key: 'gender',
+				title: "性别",
+				key: "gender",
 				width: 400
 			},{
-				title: '年龄',
-				key: 'age',
+				title: "年龄",
+				key: "age",
 				width: 400
 			}],
-			showBottomSumHtml: '<z-table :tableData="showBottomSumTableData" :columns="showBottomSumColumns" showBottomSum="true"></z-table>',
+			showBottomSumHtml: "<z-table :tableData='showBottomSumTableData' :columns='showBottomSumColumns' showBottomSum='true'></z-table>",
 			// 自定义内容的表格
 			customTableData: [{
-				name: '张三',
+				name: "张三",
 				age: 18,
-				gender: '男'
+				gender: "男"
 			},{
-				name: '赵四',
+				name: "赵四",
 				age: 16,
-				gender: '女'
+				gender: "女"
 			},{
-				name: '王五',
+				name: "王五",
 				age: 20,
-				gender: '男'
+				gender: "男"
 			},{
-				name: '李六',
+				name: "李六",
 				age: 18,
-				gender: '女'
+				gender: "女"
 			}],
 			customColumns: [{
-				title: '姓名',
+				title: "姓名",
 				format: {
 				    template: "我叫 #name#",
 				    names: ["name"]
 				},
 				width: 200
 			},{
-				title: '性别',
-				key: 'gender',
+				title: "性别",
+				key: "gender",
 				width: 400
 			},{
-				title: '年龄',
-				key: 'age',
+				title: "年龄",
+				key: "age",
 				width: 400
 			}],
-			customHtml: '<z-table :tableData="customTableData" :columns="customColumns"></z-table>',
+			customHtml: "<z-table :tableData='customTableData' :columns='customColumns'></z-table>",
 			// 单元格为链接
 			isLinkTableData: [
 				{
-					name: '张三',
+					name: "张三",
 					age: 18,
-					gender: '男'
+					gender: "男"
 				},
 				{
-					name: '赵四',
+					name: "赵四",
 					age: 16,
-					gender: '女'
+					gender: "女"
 				},
 				{
-					name: '王五',
+					name: "王五",
 					age: 20,
-					gender: '男'
+					gender: "男"
 				},
 				{
-					name: '李六',
+					name: "李六",
 					age: 18,
-					gender: '女'
+					gender: "女"
 				}
 			],
 			isLinkColumns: [
 				{
-					title: '姓名',
-					key: 'name',
+					title: "姓名",
+					key: "name",
 					isLink: {
 						url: "https://www.baidu.com",
 						params: ["from|name"]
@@ -636,23 +702,23 @@ export default {
 					width: 100
 				},
 				{
-					title: '性别',
-					key: 'gender',
+					title: "性别",
+					key: "gender",
 					width: 400
 				},
 				{
-					title: '年龄',
-					key: 'age',
+					title: "年龄",
+					key: "age",
 					width: 400
 				}
 			],
-			isLinkHtml: '<z-table :tableData="isLinkTableData" :columns="isLinkColumns"></z-table>',
+			isLinkHtml: "<z-table :tableData='isLinkTableData' :columns='isLinkColumns'></z-table>",
 			// 空字符串
 			emptyTableData: [],
 			emptyColumns: [
 				{
-					title: '姓名',
-					key: 'name',
+					title: "姓名",
+					key: "name",
 					empty: {
 						url: "https://www.baidu.com",
 						params: ["from|name"]
@@ -660,44 +726,44 @@ export default {
 					width: 100
 				},
 				{
-					title: '性别',
-					key: 'gender',
+					title: "性别",
+					key: "gender",
 					width: 400
 				},
 				{
-					title: '年龄',
-					key: 'age',
+					title: "年龄",
+					key: "age",
 					width: 400
 				}
 			],
-			emptyHtml: '<z-table :tableData="emptyTableData" :columns="emptyColumns" :showLoading="false" emptyText="设置了showLoading=false才会看到我"></z-table>',
+			emptyHtml: "<z-table :tableData='emptyTableData' :columns='emptyColumns' :showLoading='false' emptyText='设置了showLoading=false才会看到我'></z-table>",
 			// 自定义高度
 			heightTableData: [
 				{
-					name: '张三',
+					name: "张三",
 					age: 18,
-					gender: '男'
+					gender: "男"
 				},
 				{
-					name: '赵四',
+					name: "赵四",
 					age: 16,
-					gender: '女'
+					gender: "女"
 				},
 				{
-					name: '王五',
+					name: "王五",
 					age: 20,
-					gender: '男'
+					gender: "男"
 				},
 				{
-					name: '李六',
+					name: "李六",
 					age: 18,
-					gender: '女'
+					gender: "女"
 				}
 			],
 			heightColumns: [
 				{
-					title: '姓名',
-					key: 'name',
+					title: "姓名",
+					key: "name",
 					height: {
 						url: "https://www.baidu.com",
 						params: ["from|name"]
@@ -705,60 +771,149 @@ export default {
 					width: 100
 				},
 				{
-					title: '性别',
-					key: 'gender',
+					title: "性别",
+					key: "gender",
 					width: 400
 				},
 				{
-					title: '年龄',
-					key: 'age',
+					title: "年龄",
+					key: "age",
 					width: 400
 				}
 			],
-			heightHtml: '<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="192"></z-table>',
+			heightHtml: "<z-table :tableData='heightTableData' :columns='heightColumns' :tableHeight='192'></z-table>",
 			// 开启排序
 			sortTableData: [
 				{
-					name: '张三',
+					name: "张三",
 					age: 18,
-					gender: '男'
+					gender: "男"
 				},
 				{
-					name: '赵四',
+					name: "赵四",
 					age: 16,
-					gender: '女'
+					gender: "女"
 				},
 				{
-					name: '王五',
+					name: "王五",
 					age: 20,
-					gender: '男'
+					gender: "男"
 				},
 				{
-					name: '李六',
+					name: "李六",
 					age: 18,
-					gender: '女'
+					gender: "女"
 				}
 			],
 			sortColumns: [
 				{
-					title: '姓名',
-					key: 'name',
+					title: "姓名",
+					key: "name",
 					width: 100
 				},
 				{
-					title: '性别',
-					key: 'gender',
+					title: "性别",
+					key: "gender",
 					sort: true,
 					width: 400
 				},
 				{
-					title: '年龄',
-					key: 'age',
+					title: "年龄",
+					key: "age",
 					sort: true,
 					width: 400
 				}
 			],
-			sortHtml: '<z-table :tableData="sortTableData" :columns="sortColumns" @sort="doSort"></z-table>',
+			sortHtml: "<z-table :tableData='sortTableData' :columns='sortColumns' @sort='doSort'></z-table>",
+			finaleTableData: [
+				{
+					name: "张三",
+					age: 18,
+					gender: "男"
+				},
+				{
+					name: "赵四",
+					age: 16,
+					gender: "女"
+				},
+				{
+					name: "王五",
+					age: 20,
+					gender: "男"
+				},
+				{
+					name: "李六",
+					age: 18,
+					gender: "女"
+				},
+				{
+					name: "张三",
+					age: 18,
+					gender: "男"
+				},
+				{
+					name: "赵四",
+					age: 16,
+					gender: "女"
+				},
+				{
+					name: "王五",
+					age: 20,
+					gender: "男"
+				},
+				{
+					name: "李六",
+					age: 18,
+					gender: "女"
+				},
+				{
+					name: "张三",
+					age: 18,
+					gender: "男"
+				},
+				{
+					name: "赵四",
+					age: 16,
+					gender: "女"
+				},
+				{
+					name: "王五",
+					age: 20,
+					gender: "男"
+				},
+				{
+					name: "李六",
+					age: 18,
+					gender: "女"
+				}
+			],
+			finaleColumns: [
+				{
+					title: "姓名",
+					format: {
+					    template: "我叫 #name#",
+					    names: ["name"]
+					},
+					isLink: {
+						url: "https://www.baidu.com",
+						params: ["from|name"]
+					},
+					width: 200
+				},
+				{
+					title: "性别",
+					key: "gender",
+					sort: true,
+					width: 400
+				},
+				{
+					title: "年龄",
+					key: "age",
+					sort: true,
+					width: 400
+				}
+			],
+			finaleHtml: "<z-table :tableData='finaleTableData' :columns='finaleColumns' @onSort='doSort' stickSide showBottomSum emptyText='设置了showLoading=false才会看到我' :tableHeight='600'></z-table>",
 		};
 	},
 	components: {
@@ -768,7 +923,7 @@ export default {
 		doSort(res) {
 			uni.showToast({
 				title: `点击了${res.key}的排序, 排序方式为${res.type}`,
-				icon: 'none'
+				icon: "none"
 			})
 		}
 	}

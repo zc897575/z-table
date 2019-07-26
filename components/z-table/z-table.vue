@@ -2,54 +2,56 @@
 	<view class="z-table">
 		<view class="z-table-main" :style="compluteHeight">
 			<view class="z-table-container">
-				<view class="z-table-title">
-					<view
-						class="z-table-title-item"
-						:class="{ 'z-table-stick-side': stickSide && index == 0 }"
-						:style="{ width: item.width ? item.width + 'rpx' : '200rpx' }"
-						v-for="(item, index) in columns"
-						:key="index"
-						@click="sort(item.key, index)"
-					>
-						{{ item.title }}
-						<view v-if="item.hasOwnProperty('key') && item.hasOwnProperty('sort') && tableData.length" class="sort">
-							<view class="up-arrow" :class="{ action: nowSortKey == item.key && sortType == 'asc' }"></view>
-							<view class="down-arrow" :class="{ action: nowSortKey == item.key && sortType == 'desc' }"></view>
-						</view>
-					</view>
-				</view>
-				<view v-if="tableData.length" class="z-table-container-row" :class="{ 'z-table-has-bottom': showBottomSum }" v-for="(row, iIndex) in tableData" :key="iIndex">
-					<view
-						class="z-table-container-col"
-						:class="{ 'z-table-stick-side': stickSide && jIndex == 0 }"
-						:style="{ width: col.width ? col.width + 'rpx' : '200rpx' }"
-						v-for="(col, jIndex) in columns"
-						:key="jIndex"
-					>
-						<view v-if="!col.isLink" v-html="getRowContent(row, col)"></view>
-						<!-- #ifdef H5 -->
-						<router-link v-else-if="setUrl(row, col).indexOf('http') != 0" :to="setUrl(row, col)" v-html="getRowContent(row, col)"></router-link>
-						<a v-else-if="col.isLink" :href="setUrl(row, col)" v-html="getRowContent(row, col)"></a>
-						<!-- #endif -->
-						<!-- #ifndef H5 -->
-						<navigator v-else-if="col.isLink" :url="setUrl(row, col)" v-html="getRowContent(row, col)"></navigator>
-						<!-- #endif -->
-					</view>
-				</view>
-				<view class="z-table-bottom" v-if="showBottomSum && tableData.length">
-					<view
-						class="z-table-bottom-col"
-						:class="{ 'z-table-stick-side': stickSide && sumIndex == 0 }"
-						:style="{ width: sumCol.width ? sumCol.width + 'rpx' : '200rpx' }"
-						v-for="(sumCol, sumIndex) in columns"
-						:key="sumIndex"
-					>
-						<view class="z-table-bottom-text">
-							<!-- <view v-if="sumIndex != 0" class="z-table-bottom-text-title">{{ sumCol.title }}</view> -->
-							<text :class="{ sum: sumIndex == 0 }">{{ sumIndex == 0 ? '总计' : dosum(sumCol.key) }}</text>
-						</view>
-					</view>
-				</view>
+                <view class="z-table-pack">
+    				<view class="z-table-title">
+    					<view
+    						class="z-table-title-item"
+    						:class="{ 'z-table-stick-side': stickSide && index == 0 }"
+    						:style="{ width: item.width ? item.width + 'rpx' : '200rpx' }"
+    						v-for="(item, index) in columns"
+    						:key="index"
+    						@click="sort(item.key, index)"
+    					>
+    						{{ item.title }}
+    						<view v-if="item.hasOwnProperty('key') && item.hasOwnProperty('sort') && tableData.length" class="sort">
+    							<view class="up-arrow" :class="{ action: nowSortKey == item.key && sortType == 'asc' }"></view>
+    							<view class="down-arrow" :class="{ action: nowSortKey == item.key && sortType == 'desc' }"></view>
+    						</view>
+    					</view>
+    				</view>
+    				<view v-if="tableData.length" class="z-table-container-row" :class="{ 'z-table-has-bottom': showBottomSum }" v-for="(row, iIndex) in tableData" :key="iIndex">
+    					<view
+    						class="z-table-container-col"
+    						:class="{ 'z-table-stick-side': stickSide && jIndex == 0 }"
+    						:style="{ width: col.width ? col.width + 'rpx' : '200rpx' }"
+    						v-for="(col, jIndex) in columns"
+    						:key="jIndex"
+    					>
+    						<view v-if="!col.isLink" v-html="getRowContent(row, col)"></view>
+    						<!-- #ifdef H5 -->
+    						<router-link v-else-if="setUrl(row, col).indexOf('http') != 0" :to="setUrl(row, col)" v-html="getRowContent(row, col)"></router-link>
+    						<a v-else-if="col.isLink" :href="setUrl(row, col)" v-html="getRowContent(row, col)"></a>
+    						<!-- #endif -->
+    						<!-- #ifndef H5 -->
+    						<navigator v-else-if="col.isLink" :url="setUrl(row, col)" v-html="getRowContent(row, col)"></navigator>
+    						<!-- #endif -->
+    					</view>
+    				</view>
+    				<view :class="['z-table-bottom', {'long-table': longTable}]" v-if="showBottomSum && tableData.length">
+    					<view
+    						class="z-table-bottom-col"
+    						:class="{ 'z-table-stick-side': stickSide && sumIndex == 0 }"
+    						:style="{ width: sumCol.width ? sumCol.width + 'rpx' : '200rpx' }"
+    						v-for="(sumCol, sumIndex) in columns"
+    						:key="sumIndex"
+    					>
+    						<view class="z-table-bottom-text">
+    							<!-- <view v-if="sumIndex != 0" class="z-table-bottom-text-title">{{ sumCol.title }}</view> -->
+    							<text :class="{ sum: sumIndex == 0 }">{{ sumIndex == 0 ? '总计' : dosum(sumCol.key) }}</text>
+    						</view>
+    					</view>
+    				</view>
+                </view>
 			</view>
 			<view v-if="tableData.length == 0" class="table-empty">
 				<!-- image v-if="!showLoading" class="empty-img" src="../static/empty.png"></image -->
@@ -84,13 +86,10 @@ export default {
 	data() {
 		return {
 			version: '1.0.2',
-			system: 'android',
 			nowSortKey: '',
 			sortType: 'desc', // asc/desc 升序/降序
-			tableTop: 0,
-			tableLeft: 0,
-			scrollTop: 0,
-			scrollLeft: 0
+            longTable: true,
+			lineHeight: uni.upx2px(64)
 		};
 	},
 	computed: {
@@ -139,18 +138,24 @@ export default {
 		this.init();
 	},
 	methods: {
-		init() {
-			let _self = this;
-			uni.getSystemInfo({
-				success: function(res) {
-					let system = res.system.toLowerCase().indexOf('ios');
-					if (system != -1) {
-						// 如果是苹果系统
-						_self.system = 'ios';
-					}
-				}
-			});
-		},
+		async init() {
+            let container = await this.getPageSize('.z-table-container'),
+                pack = await this.getPageSize('.z-table-pack')
+            if ((container.height - lineHeight) != pack.height) {
+                this.longTable = true
+            } else {
+                this.longTable = false
+            }
+        },
+        getPageSize(selecter) {
+            // 获取元素信息
+            let query = uni.createSelectorQuery().in(this), _this = this
+            return new Promise((resolve, reject) => {
+                query.select(selecter).boundingClientRect(res => {
+                    resolve(res)
+                }).exec();
+            })
+        },
 		dosum(key) {
 			let sum = 0;
 			this.tableData.map((item, index) => {
@@ -253,19 +258,16 @@ export default {
 			});
 			tempUrl = tempUrl.replace(/\&/, '?');
 			return tempUrl;
-		},
-		// v1.0.1
-		countScroll({ detail: { scrollLeft, scrollTop } }) {
-			// this.scrollLeft = scrollLeft
-			// this.scrollTop = scrollTop
-			// this.tableLeft = scrollLeft
-			// this.tableTop = scrollTop
 		}
 	}
 };
 </script>
 
 <style lang="scss">
+.navigator-hover {
+    background: transparent;
+    opacity: 1;
+}
 @mixin ellipsis($num: 1) {
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -338,6 +340,11 @@ a {
 		overflow: scroll;
 		box-sizing: border-box;
 	}
+	
+	.z-table-pack {
+		position: relative;
+		min-height: 100%;
+	}
 
 	.z-table-title {
 		position: sticky;
@@ -369,9 +376,10 @@ a {
 		.z-table-title-item,
 		.z-table-container-col {
 			@include ellipsis();
-			display: inline-block;
+			display: inline-flex;
 			padding: 0 16upx;
 			height: 64upx;
+			align-items: center;
 			line-height: 64upx;
 			box-sizing: border-box;
 		}
@@ -392,7 +400,7 @@ a {
 	}
 
 	.z-table-bottom {
-		position: sticky;
+		position: absolute;
 		bottom: 0;
 		z-index: 9;
 		display: flex;
@@ -402,6 +410,10 @@ a {
 		color: #fff !important;
 		white-space: nowrap;
 		box-sizing: border-box;
+
+        &.long-table {
+            position: sticky;
+        }
 
 		.z-table-stick-side {
 			background: #4298f7 !important;
