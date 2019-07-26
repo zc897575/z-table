@@ -1,12 +1,12 @@
 <template>
 	<view class="content">
 		<image class="logo" src="/static/z-table/z-table.png"></image>
-		<view class="version">v 1.0.3</view>
+		<view class="version">v 1.0.4</view>
 		<view class="title">
 			注意:
 			<view>本示例必须使用sass插件,请在HbuildX的工具-插件安装中安装scss/sass编译插件</view>
 			<text space="ensp">
-				1.0.3更新内容：
+				1.0.4更新内容：
 				    数据高度小于视窗高度的时候，底部统计不再显示跟随最后一条数据显示，而是沉在视窗底部
 			</text>
 		</view>

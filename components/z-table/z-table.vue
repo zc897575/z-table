@@ -85,7 +85,7 @@ import Vue from 'vue';
 export default {
 	data() {
 		return {
-			version: '1.0.2',
+			version: '1.0.4',
 			nowSortKey: '',
 			sortType: 'desc', // asc/desc 升序/降序
             longTable: true,
