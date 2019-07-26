@@ -141,7 +141,7 @@ export default {
 		async init() {
             let container = await this.getPageSize('.z-table-container'),
                 pack = await this.getPageSize('.z-table-pack')
-            if ((container.height - this.lineHeight) != pack.height) {
+            if (container.height != pack.height) {
                 this.longTable = true
             } else {
                 this.longTable = false
