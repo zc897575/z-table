@@ -1,6 +1,9 @@
 <template>
 	<view class="z-table">
 		<view class="z-table-main" :style="compluteHeight">
+			<view v-if="!tableLoaded" :class="['z-loading', {ztableLoading: tableShow}]">
+				<view class="z-loading-animate"></view>
+			</view>
 			<view class="z-table-container">
                 <view class="z-table-pack">
     				<view class="z-table-title">
@@ -85,11 +88,13 @@ import Vue from 'vue';
 export default {
 	data() {
 		return {
-			version: '1.0.4',
+			version: '1.0.5',
 			nowSortKey: '',
 			sortType: 'desc', // asc/desc 升序/降序
             longTable: true,
-			lineHeight: uni.upx2px(64)
+			lineHeight: uni.upx2px(64),
+			tableLoaded: false,
+			tableShow: true
 		};
 	},
 	computed: {
@@ -137,15 +142,35 @@ export default {
 	mounted() {
 		this.init();
 	},
+	watch: {
+		columns: {
+			handler() {
+				this.init();
+			}
+		}
+	},
 	methods: {
 		async init() {
             let container = await this.getPageSize('.z-table-container'),
                 pack = await this.getPageSize('.z-table-pack')
-            if (container.height != pack.height) {
-                this.longTable = true
-            } else {
-                this.longTable = false
-            }
+			if (container && pack) {
+				this.$nextTick(function(){
+					this.tableShow = false
+					this.timer = setTimeout(function(){
+						this.tableLoaded = true
+					}, 300)
+				})
+				if (container.height != pack.height) {
+				    this.longTable = true
+				} else {
+				    this.longTable = false
+				}
+			} else {
+				this.tableLoaded = false
+				this.$nextTick(function(){
+					this.tableShow = true
+				})
+			}
         },
         getPageSize(selecter) {
             // 获取元素信息
@@ -324,7 +349,7 @@ a {
 	display: inline-block;
 	height: 100%;
 	min-height: 130upx;
-	max-width: 100%;
+	width: 100%;
 	background: #fff;
 	border: solid 2upx #ccc;
 	font-size: $uni-font-size-sm;
@@ -480,6 +505,58 @@ a {
 		}
 	}
 
-	// 1.0.1
+	// 1.0.5
+	.z-loading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		width: 100%;
+		background: #fff;
+		opacity: 0;
+		transition: all .3s;
+		
+		&.ztableLoading {
+			opacity: 1;
+		}
+		
+		.z-loading-animate {
+		    position: relative;
+		    display: inline-block;
+		    width: 30upx;
+		    height: 30upx;
+		    margin-right: 20upx;
+		    border-radius: 100%;
+		    border: solid 6upx #ccc;
+		    vertical-align: middle;
+		    animation: rotate 1s ease-in-out infinite;
+		
+		    &::after {
+		        content: '';
+		        display: block;
+		        position: absolute;
+		        top: -10upx;
+		        z-index: 1;
+		        background: #fff;
+		        width: 20upx;
+		        height: 20upx;
+		        border-radius: 10upx;
+		    }
+		}
+		
+		@keyframes rotate {
+		    from {
+		        transform: rotate(0deg);
+		    }
+		
+		    to {
+		        transform: rotate(360deg);
+		    }
+		}
+	}
 }
 </style>
