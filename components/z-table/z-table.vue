@@ -58,7 +58,7 @@
 			</view>
 			<view v-if="tableData.length == 0" class="table-empty">
 				<!-- image v-if="!showLoading" class="empty-img" src="../static/empty.png"></image -->
-				<view v-html="showLoading ? '加载中...' : emptyText"></view>
+				<view v-html="showLoading ? '' : emptyText"></view>
 			</view>
 		</view>
 	</view>
@@ -143,10 +143,11 @@ export default {
 		this.init();
 	},
 	watch: {
-		columns: {
-			handler() {
-				this.init();
-			}
+		columns() {
+			this.init();
+		},
+		tableData() {
+			this.init();
 		}
 	},
 	methods: {
@@ -155,10 +156,12 @@ export default {
                 pack = await this.getPageSize('.z-table-pack')
 			if (container && pack) {
 				this.$nextTick(function(){
-					this.tableShow = false
-					this.timer = setTimeout(function(){
-						this.tableLoaded = true
-					}, 300)
+					if (this.tableData.length) {
+						this.tableShow = false
+						this.timer = setTimeout(function(){
+							this.tableLoaded = true
+						}, 300)
+					}
 				})
 				if (container.height != pack.height) {
 				    this.longTable = true
