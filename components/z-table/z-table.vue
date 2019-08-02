@@ -1,7 +1,7 @@
 <template>
 	<view class="z-table">
 		<view class="z-table-main" :style="compluteHeight">
-			<view v-if="!tableLoaded" :class="['z-loading', {ztableLoading: tableShow}]">
+			<view v-if="!tableLoaded && !tableData" :class="['z-loading', {ztableLoading: tableShow}]">
 				<view class="z-loading-animate"></view>
 			</view>
 			<view class="z-table-container">
@@ -67,6 +67,7 @@
 <script>
 /*
  * 表格使用
+ * 注意如果需要异步加载，需要把tableData初始值设为false，当没有数据的时候值为空数组
  * props: tableData Array | 表格数据
  * 		 columns Array | 数据映射表 每列params => title(表头文字), width(每列宽度) [, key(对应tableData的字段名) || format(自定义内容), sort(是否要排序), isLink(是否显示为超链接Object)]
  * 										   format格式: {template: 字符串模版用#key#表示需要被替换的数据,names: 对应template属性内要被替换的内容的key}
@@ -88,7 +89,7 @@ import Vue from 'vue';
 export default {
 	data() {
 		return {
-			version: '1.0.5',
+			version: '1.0.6',
 			nowSortKey: '',
 			sortType: 'desc', // asc/desc 升序/降序
             longTable: true,
@@ -104,9 +105,9 @@ export default {
 	},
 	props: {
 		tableData: {
-			type: Array,
+			type: [Array, Boolean],
 			default() {
-				return [];
+				return false;
 			}
 		},
 		columns: {
@@ -152,26 +153,28 @@ export default {
 	},
 	methods: {
 		async init() {
-            let container = await this.getPageSize('.z-table-container'),
-                pack = await this.getPageSize('.z-table-pack')
+			let _this = this
+            let container = await _this.getPageSize('.z-table-container'),
+                pack = await _this.getPageSize('.z-table-pack')
+			_this.timer && clearTimeout(_this.timer)
 			if (container && pack) {
-				this.$nextTick(function(){
-					if (this.tableData.length) {
-						this.tableShow = false
-						this.timer = setTimeout(function(){
-							this.tableLoaded = true
+				_this.$nextTick(function(){
+					if (_this.tableData && _this.tableData.length) {
+						_this.tableShow = false
+						_this.timer = setTimeout(function(){
+							_this.tableLoaded = true
 						}, 300)
 					}
 				})
 				if (container.height != pack.height) {
-				    this.longTable = true
+				    _this.longTable = true
 				} else {
-				    this.longTable = false
+				    _this.longTable = false
 				}
 			} else {
-				this.tableLoaded = false
-				this.$nextTick(function(){
-					this.tableShow = true
+				_this.tableLoaded = false
+				_this.$nextTick(function(){
+					_this.tableShow = true
 				})
 			}
         },
@@ -186,7 +189,7 @@ export default {
         },
 		dosum(key) {
 			let sum = 0;
-			this.tableData.map((item, index) => {
+			this.tableData && this.tableData.map((item, index) => {
 				if (!key && index != 0) {
 					sum = '-';
 				} else {
@@ -372,6 +375,7 @@ a {
 	.z-table-pack {
 		position: relative;
 		min-height: 100%;
+		width: fit-content;
 	}
 
 	.z-table-title {
