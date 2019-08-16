@@ -1,16 +1,21 @@
 <template>
 	<view class="content">
 		<image class="logo" src="/static/z-table/z-table.png"></image>
-		<view class="version">v 1.0.6</view>
+		<view class="version">v 1.0.7</view>
 		<view class="title">
 			注意:
 			<view>本示例必须使用sass插件,请在HbuildX的工具-插件安装中安装scss/sass编译插件</view>
-			<text space="ensp">
+			<view class="toggle-btn" @click="showUpData = !showUpData">{{ showUpData ? '隐藏' : '显示' }}更新内容</view>
+			<view v-if="showUpData">
+				<text space="ensp">
+				1.0.7更新内容：
+				    优化dosum事件，如果当前列中有个字段为非数字则计算出来的总和为'-'
 				1.0.6更新内容：
 				    添加title或者表格内容异步获取时的loading，注意如果需要异步加载，需要把tableData初始值设为false，当没有数据的时候值为空数组
 				1.0.4更新内容：
 				    数据高度小于视窗高度的时候，底部统计不再显示跟随最后一条数据显示，而是沉在视窗底部
-			</text>
+				</text>
+			</view>
 		</view>
 		<view class="example-block">
 			<view class="example-title block-title">基础使用示例</view>
@@ -531,6 +536,7 @@ export default {
 	data() {
 		return {
 			title: "zTable使用示例",
+			showUpData: false,
 			baseTableData: [
 				{
 					name: "张三",
@@ -1016,5 +1022,11 @@ export default {
 
 .codes text {
 	white-space: nowrap;
+}
+
+.toggle-btn {
+	margin: 10rpx 0;
+	padding: 10rex;
+	color: #1c1;
 }
 </style>
