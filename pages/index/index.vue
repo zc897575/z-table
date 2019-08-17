@@ -8,6 +8,8 @@
 			<view class="toggle-btn" @click="showUpData = !showUpData">{{ showUpData ? '隐藏' : '显示' }}更新内容</view>
 			<view v-if="showUpData">
 				<text space="ensp">
+				1.1.0更新内容：
+				    添加选择模块，默认多选可选择单选；添加单元格点击事件；尝试使用render函数但只有H5可以使用所以舍去，想尝试的可以把组件内的renderComponents组件注释去掉
 				1.0.7更新内容：
 				    优化dosum事件，如果当前列中有个字段为非数字则计算出来的总和为'-'
 				1.0.6更新内容：
@@ -526,6 +528,65 @@
 				</text>
 			</scroll-view>
 		</view>
+		<view class="example-block">
+			<view class="example-title block-title">开启选择功能</view>
+			<view class="table">
+				<z-table showSelect :singleSelect="singleSelect" :tableData="selectData" :columns="selectColumns" @onClick="rowClick" @onSelect="tableSelect"></z-table>
+			</view>
+			<button class="select-btn" type="primary" @click="singleSelect = !singleSelect">{{ !singleSelect ? '开启单选' : '开启多选' }}</button>
+			<view class="example-title">code:</view>
+			<scroll-view scroll-x class="codes">
+				<text space="ensp">
+					html代码:
+					{{finaleHtml}}
+					
+					js代码:
+					sortTableData: [{
+						    name: "张三",
+						    age: 18,
+						    gender: "男"
+						},{
+						    name: "赵四",
+						    age: 16,
+						    gender: "女"
+						},{
+						    name: "王五",
+						    age: 20,
+						    gender: "男"
+						},{
+						    name: "李六",
+						    age: 18,
+						    gender: "女"
+						},
+						...
+						],
+						
+					sortColumns: [{
+						    title: "姓名",
+						    key: "name",
+						    format: {
+						        template: "我叫 #name#",
+						        names: ["name"]
+						    },
+						    isLink: {
+						        url: "https://www.baidu.com",
+						        params: ["from|name"]
+						    },
+						    width: 200
+						},{
+						    title: "性别",
+						    key: "gender",
+						    sort: true,
+						    width: 100
+						},{
+						    title: "年龄",
+						    key: "age",
+						    sort: true,
+						    width: 100
+						}]
+				</text>
+			</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -922,6 +983,46 @@ export default {
 				}
 			],
 			finaleHtml: "<z-table :tableData='finaleTableData' :columns='finaleColumns' @onSort='doSort' stickSide showBottomSum emptyText='设置了showLoading=false才会看到我' :tableHeight='600'></z-table>",
+			singleSelect: false,
+			selectData: [
+				{
+					name: "张三",
+					age: 18,
+					gender: "男"
+				},
+				{
+					name: "赵四",
+					age: 16,
+					gender: "女"
+				},
+				{
+					name: "王五",
+					age: 20,
+					gender: "男"
+				},
+				{
+					name: "李六",
+					age: 18,
+					gender: "女"
+				}
+			],
+			selectColumns: [
+				{
+					title: "姓名",
+					width: 500,
+					key: 'name'
+				},
+				{
+					title: "性别",
+					key: "gender",
+					width: 400
+				},
+				{
+					title: "年龄",
+					key: "age",
+					width: 400
+				}
+			],
 		};
 	},
 	components: {
@@ -932,6 +1033,18 @@ export default {
 			uni.showToast({
 				title: `点击了${res.key}的排序, 排序方式为${res.type}`,
 				icon: "none"
+			})
+		},
+		rowClick(item) {
+			uni.showToast({
+				title: `${JSON.stringify(item)}数据被点击`,
+				icon: 'none'
+			})
+		},
+		tableSelect(selectList) {
+			uni.showToast({
+				title: `选中了TableData中下标为${selectList.join(',')}的元素`,
+				icon: 'none'
 			})
 		}
 	}
@@ -1028,5 +1141,12 @@ export default {
 	margin: 10rpx 0;
 	padding: 10rex;
 	color: #1c1;
+}
+
+.select-btn {
+	display: inline-block;
+	width: 200rpx;
+	margin-top: 20rpx;
+	font-size: 24rpx;
 }
 </style>
