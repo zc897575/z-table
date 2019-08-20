@@ -187,6 +187,9 @@
 		},
 		methods: {
 			async init() {
+				// 重置选择内容
+				this.selectAll = false
+				this.selectArr = []
 				let _this = this
 				let container = await _this.getPageSize('.z-table-container'),
 					pack = await _this.getPageSize('.z-table-pack')
