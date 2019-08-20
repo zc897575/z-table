@@ -22,7 +22,7 @@
 					<view v-if="tableData.length" :class="['table-container-box', {'short-table': !longTable && showBottomSum}]">
 						<view class="z-table-container-row" :class="{ 'z-table-has-bottom': showBottomSum }" v-for="(row, iIndex) in tableData"
 						 :key="iIndex">
-							<view class="z-table-container-col" :class="{ 'z-table-stick-side': stickSide && jIndex == 0 }" :style="{ width: col.width ? col.width + 'rpx' : '200rpx' }"
+							<view :class="['z-table-container-col', { 'z-table-stick-side': stickSide && jIndex == 0 }]" :style="{ width: col.width ? col.width + 'rpx' : '200rpx' }"
 							 v-for="(col, jIndex) in columns" :key="jIndex" @click="itemClick(row, col)">
 								<view v-if="showSelect && jIndex === 0" class="select-box" @click="doSelect(false, iIndex)">
 									<view :class="['select-tip', {'selected': selectArr.includes(iIndex)}]"></view>
@@ -363,18 +363,25 @@
 						}
 					}
 				} else {
-					if (!this.singleSelect) {
-						this.selectArr.forEach(item => {
-							temp.add(item)
-						})
-					}
+					// if (!this.singleSelect) {
+					// 	this.selectArr.forEach(item => {
+					// 		temp.add(item)
+					// 	})
+					// }
+					this.selectArr.forEach(item => {
+						temp.add(item)
+					})
 					if (temp.has(index)) {
 						temp.delete(index)
 					} else {
+						if (this.singleSelect) {
+							temp.clear()
+						}
 						temp.add(index)
 					}
 				}
 				this.selectArr = Array.from(temp)
+				// console.log(this.selectArr)
 				if (this.selectArr.length == this.tableData.length) {
 					this.selectAll = true
 				} else {

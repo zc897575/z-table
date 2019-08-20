@@ -413,7 +413,7 @@
 		<view class="example-block">
 			<view class="example-title block-title">自定义高度示例</view>
 			<view class="table">
-				<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="192"></z-table>
+				<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="230"></z-table>
 			</view>
 			<view class="example-title">code:</view>
 			<scroll-view scroll-x class="codes">
@@ -849,10 +849,6 @@
 				emptyColumns: [{
 						title: "姓名",
 						key: "name",
-						empty: {
-							url: "https://www.baidu.com",
-							params: ["from|name"]
-						},
 						width: 100
 					},
 					{
@@ -892,10 +888,6 @@
 				heightColumns: [{
 						title: "姓名",
 						key: "name",
-						height: {
-							url: "https://www.baidu.com",
-							params: ["from|name"]
-						},
 						width: 100
 					},
 					{
