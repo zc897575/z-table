@@ -1,7 +1,7 @@
 <template>
 	<view class="z-table">
 		<view class="z-table-main" :style="compluteHeight">
-			<view v-if="!tableLoaded && !tableData" :class="['z-loading', {ztableLoading: tableShow}]">
+			<view v-if="!tableLoaded && (!tableData || !columns)" :class="['z-loading', {ztableLoading: tableShow}]">
 				<view class="z-loading-animate"></view>
 			</view>
 			<view class="z-table-container">
@@ -12,10 +12,12 @@
 							<view v-if="showSelect && !singleSelect && index === 0" class="select-box" @click="doSelect(true)">
 								<view :class="['select-tip', {'selected': selectAll}]"></view>
 							</view>
-							{{ item.title }}
-							<view v-if="item.hasOwnProperty('key') && item.hasOwnProperty('sort') && tableData.length" class="sort">
-								<view class="up-arrow" :class="{ action: nowSortKey == item.key && sortType == 'asc' }"></view>
-								<view class="down-arrow" :class="{ action: nowSortKey == item.key && sortType == 'desc' }"></view>
+							<view :class="['z-table-col-text', {'text-left': titleTextAlign === 'left', 'text-center': titleTextAlign === 'center', 'text-right': titleTextAlign === 'right'}]">
+								<view v-html="getTitleText(item.title)"></view>
+								<view v-if="item.hasOwnProperty('key') && item.hasOwnProperty('sort') && tableData.length" class="sort">
+									<view class="up-arrow" :class="{ action: nowSortKey == item.key && sortType == 'asc' }"></view>
+									<view class="down-arrow" :class="{ action: nowSortKey == item.key && sortType == 'desc' }"></view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -27,18 +29,19 @@
 								<view v-if="showSelect && jIndex === 0" class="select-box" @click="doSelect(false, iIndex)">
 									<view :class="['select-tip', {'selected': selectArr.includes(iIndex)}]"></view>
 								</view>
-								<view v-if="!col.isLink">
-									<view v-if="!col.render" v-html="getRowContent(row, col)"></view>
-									<!-- <renderComponents v-else :row="row" :col="col" /> -->
+								<view :class="['z-table-col-text', {'text-left': textAlign === 'left', 'text-center': textAlign === 'center', 'text-right': textAlign === 'right'}]">
+									<view v-if="!col.isLink">
+										<view v-if="!col.render" v-html="getRowContent(row, col)"></view>
+										<!-- <renderComponents v-else :row="row" :col="col" /> -->
+									</view>
+									<!-- #ifdef H5 -->
+									<router-link v-else-if="setUrl(row, col).indexOf('http') != 0" :to="setUrl(row, col)" v-html="getRowContent(row, col)"></router-link>
+									<a v-else-if="col.isLink" :href="setUrl(row, col)" v-html="getRowContent(row, col)"></a>
+									<!-- #endif -->
+									<!-- #ifndef H5 -->
+									<navigator v-else-if="col.isLink" :url="setUrl(row, col)" v-html="getRowContent(row, col)"></navigator>
+									<!-- #endif -->
 								</view>
-
-								<!-- #ifdef H5 -->
-								<router-link v-else-if="setUrl(row, col).indexOf('http') != 0" :to="setUrl(row, col)" v-html="getRowContent(row, col)"></router-link>
-								<a v-else-if="col.isLink" :href="setUrl(row, col)" v-html="getRowContent(row, col)"></a>
-								<!-- #endif -->
-								<!-- #ifndef H5 -->
-								<navigator v-else-if="col.isLink" :url="setUrl(row, col)" v-html="getRowContent(row, col)"></navigator>
-								<!-- #endif -->
 							</view>
 						</view>
 					</view>
@@ -53,7 +56,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="tableData.length == 0" class="table-empty">
+			<view v-if="tableData && tableData.length == 0 && !tableLoaded" class="table-empty">
 				<!-- image v-if="!showLoading" class="empty-img" src="../static/empty.png"></image -->
 				<view v-html="showLoading ? '' : emptyText"></view>
 			</view>
@@ -124,7 +127,7 @@
 				 * [{title: xxx, key: 当前列展示对象名, width: 列宽, render: function}]
 				 *
 				 * */
-				type: Array,
+				type: [Array, Boolean],
 				required: true
 			},
 			stickSide: {
@@ -144,7 +147,7 @@
 				default: '暂无数据'
 			},
 			tableHeight: {
-				type: Number,
+				type: [Number, Boolean],
 				default: 0
 			},
 			showSelect: {
@@ -154,6 +157,14 @@
 			singleSelect: {
 				type: Boolean,
 				default: false
+			},
+			textAlign: {
+				type: String,
+				default: 'left' // right|center|left
+			},
+			titleTextAlign: {
+				type: String,
+				default: 'left' // right|center|left
 			}
 		},
 		mounted() {
@@ -190,6 +201,8 @@
 				// 重置选择内容
 				this.selectAll = false
 				this.selectArr = []
+				this.tableLoaded = false
+				this.tableShow = true
 				let _this = this
 				let container = await _this.getPageSize('.z-table-container'),
 					pack = await _this.getPageSize('.z-table-pack')
@@ -282,7 +295,7 @@
 					throw error
 				}
 				// console.log(tempHTML)
-				return tempHTML + ''
+				return tempHTML.toString()
 			},
 			sort(key, index) {
 				if (!key || !this.columns[index].sort) {
@@ -392,6 +405,12 @@
 				}
 				
 				this.$emit('onSelect', this.selectArr)
+			},
+			// 1.1.1
+			getTitleText(title) {
+				// 自定义表头
+				let tempHTML = title
+				return tempHTML.toString()
 			}
 		}
 	}
@@ -468,10 +487,10 @@
 		position: relative;
 		display: inline-block;
 		height: 100%;
-		min-height: 130upx;
+		min-height: 130rpx;
 		width: 100%;
 		background: #fff;
-		border: solid 2upx #ccc;
+		border: solid 2rpx #ccc;
 		font-size: $uni-font-size-sm;
 		box-sizing: border-box;
 
@@ -495,11 +514,11 @@
 		.z-table-title {
 			position: sticky;
 			top: 0;
-			height: 64upx;
+			height: 64rpx;
 			z-index: 1;
 
 			.z-table-title-item {
-				border-bottom: solid 1upx #dbdbdb;
+				border-bottom: solid 1rpx #dbdbdb;
 				background: #f8f8f8;
 			}
 
@@ -507,7 +526,7 @@
 				position: sticky;
 				top: 0;
 				left: 0;
-				border-right: solid 1upx #dbdbdb;
+				border-right: solid 1rpx #dbdbdb;
 				box-sizing: border-box;
 			}
 		}
@@ -527,17 +546,17 @@
 			.z-table-container-col {
 				@include ellipsis();
 				display: inline-flex;
-				padding: 0 16upx;
-				height: 64upx;
+				padding: 0 16rpx;
+				height: 64rpx;
 				align-items: center;
-				line-height: 64upx;
+				line-height: 64rpx;
 				box-sizing: border-box;
 			}
 		}
 
 		.z-table-container-row {
 			z-index: 0;
-			border-bottom: solid 1upx #f4f4f4;
+			border-bottom: solid 1rpx #f4f4f4;
 			box-sizing: border-box;
 		}
 
@@ -545,7 +564,7 @@
 			position: sticky;
 			left: 0;
 			background: #f7f9ff;
-			border-right: solid 1upx #dbdbdb;
+			border-right: solid 1rpx #dbdbdb;
 			box-sizing: border-box;
 		}
 
@@ -574,7 +593,7 @@
 				display: inline-flex;
 				align-items: center;
 				text-align: center;
-				padding: 16upx;
+				padding: 16rpx;
 				box-sizing: border-box;
 			}
 
@@ -584,47 +603,50 @@
 			}
 
 			.z-table-bottom-text-title {
-				margin-bottom: 10upx;
-				font-size: 22upx;
+				margin-bottom: 10rpx;
+				font-size: 22rpx;
 				color: #aad0ff;
 				box-sizing: border-box;
 			}
 
 			.sum {
-				margin-left: 14upx;
-				font-size: 28upx;
+				margin-left: 14rpx;
+				font-size: 28rpx;
 				box-sizing: border-box;
 			}
 		}
 
 		.table-empty {
 			position: absolute;
-			top: 64upx;
-			height: 64upx;
-			line-height: 64upx;
+			top: 64rpx;
+			height: 64rpx;
+			line-height: 64rpx;
 			width: 100%;
 			text-align: center;
 		}
 
 		.sort {
-			display: inline-block;
-			padding: 5upx;
-			vertical-align: text-bottom;
+			display: flex;
+			padding: 5rpx;
+			flex-direction: column;
+			justify-content: center;
 
 			.up-arrow {
-				@include triangle(top, 10upx, #ccc);
-				margin-bottom: 5upx;
+				@include triangle(top, 10rpx, #ccc);
+				display: block;
+				margin-bottom: 5rpx;
 
 				&.action {
-					@include triangle(top, 10upx, #4298f7);
+					@include triangle(top, 10rpx, #4298f7);
 				}
 			}
 
 			.down-arrow {
-				@include triangle(bottom, 10upx, #ccc);
+				@include triangle(bottom, 10rpx, #ccc);
+				display: block;
 
 				&.action {
-					@include triangle(bottom, 10upx, #4298f7);
+					@include triangle(bottom, 10rpx, #4298f7);
 				}
 			}
 		}
@@ -651,11 +673,11 @@
 			.z-loading-animate {
 				position: relative;
 				display: inline-block;
-				width: 30upx;
-				height: 30upx;
-				margin-right: 20upx;
+				width: 30rpx;
+				height: 30rpx;
+				margin-right: 20rpx;
 				border-radius: 100%;
-				border: solid 6upx #ccc;
+				border: solid 6rpx #ccc;
 				vertical-align: middle;
 				animation: rotate 1s ease-in-out infinite;
 
@@ -663,12 +685,12 @@
 					content: '';
 					display: block;
 					position: absolute;
-					top: -10upx;
+					top: -10rpx;
 					z-index: 1;
 					background: #fff;
-					width: 20upx;
-					height: 20upx;
-					border-radius: 10upx;
+					width: 20rpx;
+					height: 20rpx;
+					border-radius: 10rpx;
 				}
 			}
 
@@ -686,12 +708,12 @@
 		// 1.1.0
 		.select-box {
 			display: inline-block;
-			width: 26upx;
-			height: 26upx;
-			line-height: 14upx;
-			margin-right: 15upx;
-			border: solid 2upx #4298f7;
-			border-radius: 4upx;
+			width: 26rpx;
+			height: 26rpx;
+			line-height: 14rpx;
+			margin-right: 15rpx;
+			border: solid 2rpx #4298f7;
+			border-radius: 4rpx;
 			background: #fff;
 			text-align: center;
 		}
@@ -704,11 +726,11 @@
 
 			&.selected {
 				position: relative;
-				top: 4upx;
-				left: -4upx;
-				height: 4upx;
+				top: 4rpx;
+				left: -4rpx;
+				height: 4rpx;
 				background: #4298f7;
-				width: 10upx;
+				width: 10rpx;
 				opacity: 1;
 				transform: rotate(45deg);
 
@@ -717,23 +739,39 @@
 					content: '';
 					position: absolute;
 					display: block;
-					height: 4upx;
+					height: 4rpx;
 					background: #4298f7;
 				}
 
 				&:before {
-					bottom: -2upx;
-					left: -4upx;
-					width: 8upx;
+					bottom: -2rpx;
+					left: -4rpx;
+					width: 8rpx;
 					transform: rotate(-90deg);
 				}
 
 				&:after {
-					bottom: 16upx;
-					right: -16upx;
-					width: 34upx;
+					bottom: 16rpx;
+					right: -16rpx;
+					width: 34rpx;
 					transform: rotate(-90deg);
 				}
+			}
+		}
+		
+		// 1.1.1
+		.z-table-col-text {
+			display: flex;
+			flex: 1;
+			justify-content: flex-start;
+			align-content: center;
+			
+			&.text-center {
+				justify-content: center;
+			}
+			
+			&.text-right {
+				justify-content: flex-end;
 			}
 		}
 	}

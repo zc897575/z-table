@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<image class="logo" src="/static/z-table/z-table.png"></image>
-		<view class="version">v 1.1.0</view>
+		<view class="version">v 1.1.1</view>
 		<view class="title">
 			注意:
 			<view>本示例必须使用sass插件,请在HbuildX的工具-插件安装中安装scss/sass编译插件</view>
@@ -18,6 +18,74 @@
 					数据高度小于视窗高度的时候，底部统计不再显示跟随最后一条数据显示，而是沉在视窗底部
 				</text>
 			</view>
+		</view>
+		<view class="type-select-box">
+			<view class="type-select-box-title">
+				功能列表
+			</view>
+			<view :class="['type-select-item', {selected: nowType ===  index}]" v-for="(item, index) in selectContent" :key="item.id" @click="changeType(index)">
+				{{ `${index + 1}. ${item.name}` }}
+			</view>
+		</view>
+		<view class="example-block">
+			<view class="example-title block-title">{{ selectContent[nowType].name }}</view>
+			<view class="table">
+				<z-table :textAlign="selectContent[nowType].textAlign" :titleTextAlign="selectContent[nowType].titleTextAlign" :tableData="nowData" :columns="nowColumn" @onSort="doSort" :stickSide="selectContent[nowType].stickSide" :showBottomSum="selectContent[nowType].showBottomSum" :showLoading="false" :emptyText='selectContent[nowType].emptyText'
+				 :tableHeight='selectContent[nowType].tableHeight' @onClick="rowClick" :singleSelect="singleSelect" :showSelect="selectContent[nowType].showSelect" @onSelect="tableSelect"></z-table>
+			</view>
+			<button v-if="selectContent[nowType].showSelect" class="select-btn" type="primary" @click="singleSelect = !singleSelect">{{ !singleSelect ? '开启单选' : '开启多选' }}</button>
+			<view class="example-title">code:</view>
+			<scroll-view scroll-x class="codes">
+				<text space="ensp">
+					html代码:
+					{{finaleHtml}}
+		
+					js代码:
+					finaleTableData: [{
+					name: "张三",
+					age: 18,
+					gender: "男"
+					},{
+					name: "赵四",
+					age: 16,
+					gender: "女"
+					},{
+					name: "王五",
+					age: 20,
+					gender: "男"
+					},{
+					name: "李六",
+					age: 18,
+					gender: "女"
+					},
+					...
+					],
+		
+					finaleColumns: [{
+					title: "姓名",
+					format: {
+					template: "我叫 #name#",
+					names: ["name"]
+					},
+					isLink: {
+					url: "https://www.baidu.com",
+					params: ["from|name"]
+					},
+					width: 200
+					},{
+					title: "性别",
+					key: "gender",
+					sort: true,
+					width: 400,
+					listenerClick: true
+					},{
+					title: "年龄",
+					key: "age",
+					sort: true,
+					width: 400
+					}]
+				</text>
+			</scroll-view>
 		</view>
 		<view class="example-block">
 			<view class="example-title block-title">开启所有功能</view>
@@ -664,6 +732,180 @@
 			return {
 				title: "zTable使用示例",
 				showUpData: false,
+				nowType: 0,
+				nowData: false,
+				nowColumn: false,
+				selectContent: [
+					{
+						id: 'f0',
+						name: '开启所有的功能', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'finaleTableData', // 表格数据
+						columns: 'finaleColumns', // 表格列内容
+						stickSide: true, // 左侧固定
+						showBottomSum: true, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: true ,// 开启选择功能
+					},
+					{
+						id: 'f1',
+						name: '基础使用示例', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'baseTableData', // 表格数据
+						columns: 'baseColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+					},
+					{
+						id: 'f2',
+						name: '左侧固定', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'stickSideTableData', // 表格数据
+						columns: 'stickSideColumns', // 表格列内容
+						stickSide: true, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+					},
+					{
+						id: 'f3',
+						name: '显示底部统计', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'showBottomSumTableData', // 表格数据
+						columns: 'showBottomSumColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: true, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+					},
+					{
+						id: 'f4',
+						name: '自定义内容', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'customTableData', // 表格数据
+						columns: 'customColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+					},
+					{
+						id: 'f5',
+						name: '单元格内容为链接', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'isLinkTableData', // 表格数据
+						columns: 'isLinkColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+					},
+					{
+						id: 'f6',
+						name: '自定义判空显示内容', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'emptyTableData', // 表格数据
+						columns: 'emptyColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+					},
+					{
+						id: 'f7',
+						name: '自定义高度', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'heightTableData', // 表格数据
+						columns: 'heightColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: 200, // 表格高度
+						showSelect: false ,// 开启选择功能
+					},
+					{
+						id: 'f8',
+						name: '开启排序', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'sortTableData', // 表格数据
+						columns: 'sortColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+					},
+					{
+						id: 'f9'
+,						name: '开启选择', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'selectData', // 表格数据
+						columns: 'selectColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: true ,// 开启选择功能
+					},
+					{
+						id: 'f10',
+						name: '开启点击事件', // 功能名
+						textAlign: false, // 内容对齐方式
+						titleTextAlign: false, // 表头对齐方式
+						tableData: 'clickData', // 表格数据
+						columns: 'clickColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+					},
+					{
+						id: 'f11',
+						name: '设置对齐方式', // 功能名
+						textAlign: 'center', // 内容对齐方式
+						titleTextAlign: 'center', // 表头对齐方式
+						tableData: 'alignTableData', // 表格数据
+						columns: 'alignColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+					},
+					{
+						id: 'f12',
+						name: '自定义表头内容（只能定义样式）', // 功能名
+						textAlign: 'center', // 内容对齐方式
+						titleTextAlign: 'center', // 表头对齐方式
+						tableData: 'customTitleTableData', // 表格数据
+						columns: 'customTitleColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+					}
+				],
 				baseTableData: [{
 						name: "张三",
 						age: 18,
@@ -1109,12 +1351,113 @@
 					}
 				],
 				clickHtml: "<z-table :tableData='selectData' :columns='selectColumns' @onClick='rowClick'></z-table>",
+				alignTableData: [{
+						name: "张三",
+						age: 18,
+						gender: "男"
+					},
+					{
+						name: "赵四",
+						age: 16,
+						gender: "女"
+					},
+					{
+						name: "王五",
+						age: 20,
+						gender: "男"
+					},
+					{
+						name: "李六",
+						age: 18,
+						gender: "女"
+					}
+				],
+				alignColumns: [{
+						title: "姓名",
+						key: 'name',
+						width: 200
+					},
+					{
+						title: '性别',
+						key: "gender",
+						width: 400,
+					},
+					{
+						title: "年龄",
+						key: "age",
+						width: 400
+					}
+				],
+				alignHtml: "<z-table :tableData='alignTableData' :columns='alignColumns'></z-table>",
+				customTitleTableData: [{
+						name: "张三",
+						age: 18,
+						gender: "男"
+					},
+					{
+						name: "赵四",
+						age: 16,
+						gender: "女"
+					},
+					{
+						name: "王五",
+						age: 20,
+						gender: "男"
+					},
+					{
+						name: "李六",
+						age: 18,
+						gender: "女"
+					}
+				],
+				customTitleColumns: [{
+						title: '<span style="color: #333"><span style="display: inline-block; width: 10px; height: 10px; line-height: 10px; margin-right: 5px; border: solid 1px #000; border-radius: 50%; font-size: 11px; text-align: center; vertical-align: middle;">!</span><span st yle="vertical-align: middle;">姓名</span></span>',
+						key: 'name',
+						width: 200
+					},
+					{
+						title: '<span style="color: red">性别</span>',
+						key: "gender",
+						width: 400,
+					},
+					{
+						title: '<span style="color: blue">年龄</span>',
+						key: "age",
+						width: 400
+					}
+				],
+				customTitleHtml: "<z-table :tableData='customTitleTableData' :columns='customTitleColumns'></z-table>",
 			};
 		},
 		components: {
 			zTable
 		},
+		watch: {
+			nowType: {
+				handler() {
+					this.nowData = false
+					this.nowColumn = false
+					this.debounce(this.setTable)()
+				},
+				immediate: true
+			}
+		},
 		methods: {
+			changeType(index) {
+				if (this.nowType === index) return
+				this.nowType = index
+			},
+			setTable() {
+				this.nowData = this.$data[this.selectContent[this.nowType].tableData]
+				this.nowColumn = this.$data[this.selectContent[this.nowType].columns]
+			},
+			debounce(fn, time = 1000) {
+				let timer = null
+				return function() {
+					if (timer) clearTimeout(timer)
+					timer = setTimeout(fn, time)
+				}
+			},
 			doSort(res) {
 				uni.showToast({
 					title: `点击了${res.key}的排序, 排序方式为${res.type}`,
@@ -1137,19 +1480,19 @@
 	};
 </script>
 
-<style>
+<style lang="scss">
 	.content {
-		padding: 20upx;
-		font-size: 24upx;
+		padding: 20rpx;
+		font-size: 24rpx;
 		background: #066;
 	}
 
 	.logo {
 		display: block;
-		height: 144upx;
-		width: 144upx;
+		height: 144rpx;
+		width: 144rpx;
 		margin: 0 auto;
-		margin-top: 50upx;
+		margin-top: 50rpx;
 	}
 
 	.version {
@@ -1162,44 +1505,45 @@
 	}
 
 	.title {
-		font-size: 24upx;
+		margin-bottom: 20rpx;
+		font-size: 24rpx;
 		color: #fff;
 	}
 
 	.block-title {
 		position: sticky;
 		top: var(--window-top);
-		padding: 40upx 0 !important;
+		padding: 40rpx 0 !important;
 		text-align: center;
 		background: #f7f9ff;
 		z-index: 99;
 	}
 
 	.example-block {
-		padding: 20upx;
-		margin: 20upx -20upx;
+		padding: 20rpx;
+		margin: 20rpx -20rpx;
 		background: #f7f9ff;
 	}
 
 	.example-title {
-		font-size: 30upx;
+		font-size: 30rpx;
 		font-weight: bold;
-		margin: 30upx 0 10upx;
+		margin: 30rpx 0 10rpx;
 	}
 
 	.example-explain {
-		font-size: 24upx;
+		font-size: 24rpx;
 	}
 
 	.explain-title {
-		margin-top: 30upx;
-		padding-bottom: 10upx;
-		font-size: 28upx;
-		border-bottom: solid 2upx #ccc;
+		margin-top: 30rpx;
+		padding-bottom: 10rpx;
+		font-size: 28rpx;
+		border-bottom: solid 2rpx #ccc;
 	}
 
 	.explain-context {
-		margin-top: 10upx;
+		margin-top: 10rpx;
 		color: #8f8f94;
 	}
 
@@ -1209,11 +1553,11 @@
 
 	.explain-text {
 		flex: 1;
-		margin-left: 20upx;
+		margin-left: 20rpx;
 	}
 
 	.codes {
-		padding: 20upx;
+		padding: 20rpx;
 		background: #333;
 		color: #fff;
 		box-sizing: border-box;
@@ -1234,5 +1578,39 @@
 		width: 200rpx;
 		margin-top: 20rpx;
 		font-size: 24rpx;
+	}
+	
+	.type-select-box {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		padding: 20rpx;
+		margin: 0 -20rpx;
+		background: #f7f9ff;
+	}
+	
+	.type-select-box-title {
+		width: 100%;
+		margin-bottom: 20rpx;
+		font-size: 36rpx;
+	}
+	
+	.type-select-item {
+		flex: 1;
+		padding: 20rpx;
+		margin-right: 10rpx;
+		margin-bottom: 10rpx;
+		white-space: nowrap;
+		border: solid 2rpx #066;
+		border-radius: 4rpx;
+		font-size: 28rpx;
+		background: #fff;
+		color: #006666;
+		text-align: center;
+		
+		&.selected {
+			background: #066;
+			color: #fff;
+		}
 	}
 </style>
