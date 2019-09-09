@@ -1,13 +1,15 @@
 <template>
 	<view class="content">
 		<image class="logo" src="/static/z-table/z-table.png"></image>
-		<view class="version">v 1.1.1</view>
+		<view class="version">v 1.1.2</view>
 		<view class="title">
 			注意:
 			<view>本示例必须使用sass插件,请在HbuildX的工具-插件安装中安装scss/sass编译插件</view>
 			<view class="toggle-btn" @click="showUpData = !showUpData">{{ showUpData ? '隐藏' : '显示' }}更新内容</view>
 			<view v-if="showUpData">
 				<text space="ensp">
+					1.1.2更新内容：
+					添加自定义表头columns.title内容可以是html字符串模版，添加表头内容的对齐方式
 					1.1.0更新内容：
 					添加选择模块，默认多选可选择单选；添加单元格点击事件；尝试使用render函数但只有H5可以使用所以舍去，想尝试的可以把组件内的renderComponents组件注释去掉
 					1.0.7更新内容：
@@ -38,157 +40,12 @@
 			<scroll-view scroll-x class="codes">
 				<text space="ensp">
 					html代码:
-					{{finaleHtml}}
+					{{nowHtml}}
 		
 					js代码:
-					finaleTableData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					},
-					...
-					],
+					tableData: {{ JSON.stringify(nowData).replace(/(\,)/g, `$1\n    			`).replace(/(\})/g, '\n$1').replace(/(\{)/g, '\n$1\n    			') }},
 		
-					finaleColumns: [{
-					title: "姓名",
-					format: {
-					template: "我叫 #name#",
-					names: ["name"]
-					},
-					isLink: {
-					url: "https://www.baidu.com",
-					params: ["from|name"]
-					},
-					width: 200
-					},{
-					title: "性别",
-					key: "gender",
-					sort: true,
-					width: 400,
-					listenerClick: true
-					},{
-					title: "年龄",
-					key: "age",
-					sort: true,
-					width: 400
-					}]
-				</text>
-			</scroll-view>
-		</view>
-		<view class="example-block">
-			<view class="example-title block-title">开启所有功能</view>
-			<view class="table">
-				<z-table :tableData="finaleTableData" :columns="finaleColumns" @onSort="doSort" stickSide showBottomSum emptyText='设置了showLoading=false才会看到我'
-				 :tableHeight='600' @onClick="rowClick" showSelect @onSelect="tableSelect"></z-table>
-			</view>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{finaleHtml}}
-		
-					js代码:
-					finaleTableData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					},
-					...
-					],
-		
-					finaleColumns: [{
-					title: "姓名",
-					format: {
-					template: "我叫 #name#",
-					names: ["name"]
-					},
-					isLink: {
-					url: "https://www.baidu.com",
-					params: ["from|name"]
-					},
-					width: 200
-					},{
-					title: "性别",
-					key: "gender",
-					sort: true,
-					width: 400,
-					listenerClick: true
-					},{
-					title: "年龄",
-					key: "age",
-					sort: true,
-					width: 400
-					}]
-				</text>
-			</scroll-view>
-		</view>
-		<view class="example-block">
-			<view class="example-title block-title">基础使用示例</view>
-			<view class="table">
-				<z-table :tableData="baseTableData" :columns="baseColumns"></z-table>
-			</view>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{baseHtml}}
-
-					js代码:
-					baseTableData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					}],
-
-					baseColumns: [{
-					title: "姓名",
-					key: "name",
-					width: 100
-					},{
-					title: "性别",
-					key: "gender",
-					width: 100
-					},{
-					title: "年龄",
-					key: "age",
-					width: 100
-					}]
+					columns: {{ JSON.stringify(nowColumn).replace(/(\,)/g, `$1\n    			`).replace(/(\})/g, '\n$1').replace(/(\{)/g, '\n$1\n    			') }}
 				</text>
 			</scroll-view>
 			<view class="example-explain">
@@ -196,391 +53,39 @@
 				<view class="explain-context">
 					<view class="explain">tableData [Array] <text class="explain-text">需要展示的数据</text></view>
 					<view class="explain">columns [Array] <text class="explain-text">表格列的配置描述</text></view>
+					<view class="explain">stickSide [Boolean] <text class="explain-text">是否固定左侧第一列</text></view>
+					<view class="explain">showBottomSum [Boolean] <text class="explain-text">是否显示底部统计行</text></view>
+					<view class="explain">showLoading [Boolean] <text class="explain-text">对于第一次渲染表格时显示正在加载</text></view>
+					<view class="explain">emptyText [String] <text class="explain-text">空数据显示的文字内容, 默认:暂无数据</text></view>
+					<view class="explain">tableHeight [Number] <text class="explain-text">表格的高度超出会开启滚动,(实测谷歌亲儿子机型可能会出现下拉触发整个页面下拉刷新的问题)</text></view>
+					<view class="explain">showSelect [Boolean] <text class="explain-text">开启选择</text></view>
+					<view class="explain">singleSelect [Boolean] <text class="explain-text">是否单选，默认false</text></view>
 				</view>
 				<view class="explain-title">columns具体参数</view>
 				<view class="explain-context">
 					<view class="explain">title [String] <text class="explain-text">列名</text></view>
 					<view class="explain">key [String] <text class="explain-text">对应tableData中的字段名</text></view>
 					<view class="explain">width [Number] <text class="explain-text">列宽(如果不给列宽会出现列宽不一致的问题)</text></view>
-				</view>
-			</view>
-		</view>
-		<view class="example-block">
-			<view class="example-title block-title">左侧固定的表格示例</view>
-			<view class="table">
-				<z-table :tableData="stickSideTableData" :columns="stickSideColumns" stickSide></z-table>
-			</view>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{stickSideHtml}}
-
-					js代码:
-					stickSideTableData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					}],
-
-					stickSideColumns: [{
-					title: "姓名",
-					key: "name",
-					width: 100
-					},{
-					title: "性别",
-					key: "gender",
-					width: 400
-					},{
-					title: "年龄",
-					key: "age",
-					width: 400
-					}]
-				</text>
-			</scroll-view>
-			<view class="example-explain">
-				<view class="explain-title">参数</view>
-				<view class="explain-context">
-					<view class="explain">其他参数一样</view>
-					<view class="explain">stickSide [Boolean] <text class="explain-text">是否固定左侧第一列</text></view>
-				</view>
-			</view>
-		</view>
-		<view class="example-block">
-			<view class="example-title block-title">显示底部统计的表格示例</view>
-			<view class="table">
-				<z-table :tableData="showBottomSumTableData" :columns="showBottomSumColumns" showBottomSum></z-table>
-			</view>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{showBottomSumHtml}}
-
-					js代码:
-					showBottomSumTableData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					}],
-
-					showBottomSumColumns: [{
-					title: "姓名",
-					key: "name",
-					width: 100
-					},{
-					title: "性别",
-					key: "gender",
-					width: 400
-					},{
-					title: "年龄",
-					key: "age",
-					width: 400
-					}]
-				</text>
-			</scroll-view>
-			<view class="example-explain">
-				<view class="explain-title">参数</view>
-				<view class="explain-context">
-					<view class="explain">其他参数一样</view>
-					<view class="explain">showBottomSum [Boolean] <text class="explain-text">是否显示底部统计行</text></view>
-				</view>
-			</view>
-		</view>
-		<view class="example-block">
-			<view class="example-title block-title">自定义内容的表格示例</view>
-			<view class="table">
-				<z-table :tableData="customTableData" :columns="customColumns"></z-table>
-			</view>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{customHtml}}
-
-					js代码:
-					customTableData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					}],
-
-					customColumns: [{
-					title: "姓名",
-					format: {
-					template: "我叫 #name#",
-					names: ["name"]
-					},
-					width: 200
-					},{
-					title: "性别",
-					key: "gender",
-					width: 400
-					},{
-					title: "年龄",
-					key: "age",
-					width: 400
-					}]
-				</text>
-			</scroll-view>
-			<view class="example-explain">
-				<view class="explain-title">参数</view>
-				<view class="explain-context">
-					<view class="explain">其他参数一样</view>
 					<view class="explain">
 						columns中的key替换为format
 					</view>
 					<view class="explain">format [Object] <text class="explain-text">自定义内容</text></view>
 				</view>
+				<view class="explain">
+					columns中的添加参数isLink
+				</view>
+				<view class="explain">isLink [Object] <text class="explain-text">单元格为链接的数据</text></view>
+				<view class="explain">sort [Boolean] <text class="explain-text">开启排序</text></view>
 				<view class="explain-title">format具体参数</view>
 				<view class="explain-context">
 					<view class="explain">template [String] <text class="explain-text">自定义内容模版需要用到tableData中的字段时用#key#(key是字段名)来替换</text></view>
 					<view class="explain">name [Array] <text class="explain-text">对应tableData中的字段名数组</text></view>
-				</view>
-			</view>
-		</view>
-		<view class="example-block">
-			<view class="example-title block-title">单元格内容为链接的示例</view>
-			<view class="table">
-				<z-table :tableData="isLinkTableData" :columns="isLinkColumns"></z-table>
-			</view>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{isLinkHtml}}
-
-					js代码:
-					isLinkTableData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					}],
-
-					isLinkColumns: [{
-					title: "姓名",
-					key: "name",
-					isLink: {
-					url: "https://www.baidu.com",
-					params: ["from|name"]
-					},
-					width: 100
-					},{
-					title: "性别",
-					key: "gender",
-					width: 100
-					},{
-					title: "年龄",
-					key: "age",
-					width: 100
-					}]
-				</text>
-			</scroll-view>
-			<view class="example-explain">
-				<view class="explain-title">参数</view>
-				<view class="explain-context">
-					<view class="explain">其他参数一样</view>
-					<view class="explain">
-						columns中的添加参数isLink
-					</view>
-					<view class="explain">isLink [Object] <text class="explain-text">单元格为链接的数据</text></view>
 				</view>
 				<view class="explain-title">isLink具体参数</view>
 				<view class="explain-context">
 					<view class="explain">url [String] <text class="explain-text">链接地址, 在H5上地址带http被认为是外部链接</text></view>
 					<view class="explain">params [Array] <text class="explain-text">地址带的参数[key|value, key|value,
 							...]每一项都是key和value以"|"链接,如果不带"|"默认键值同名 value就是tableData中的字段名</text></view>
-				</view>
-			</view>
-		</view>
-		<view class="example-block">
-			<view class="example-title block-title">自定义判空显示的示例</view>
-			<view class="table">
-				<z-table :tableData="emptyTableData" :columns="emptyColumns" :showLoading="false" emptyText="设置了showLoading=false才会看到我"></z-table>
-			</view>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{emptyHtml}}
-
-					js代码:
-					emptyTableData: [],
-					emptyColumns: [{
-					title: "姓名",
-					key: "name",
-					width: 100
-					},{
-					title: "性别",
-					key: "gender",
-					width: 100
-					},{
-					title: "年龄",
-					key: "age",
-					width: 100
-					}]
-				</text>
-			</scroll-view>
-			<view class="example-explain">
-				<view class="explain-title">参数</view>
-				<view class="explain-context">
-					<view class="explain">其他参数一样</view>
-					<view class="explain">showLoading [Boolean] <text class="explain-text">对于第一次渲染表格时显示正在加载</text></view>
-					<view class="explain">emptyText [String] <text class="explain-text">空数据显示的文字内容, 默认:暂无数据</text></view>
-				</view>
-			</view>
-		</view>
-		<view class="example-block">
-			<view class="example-title block-title">自定义高度示例</view>
-			<view class="table">
-				<z-table :tableData="heightTableData" :columns="heightColumns" :tableHeight="230"></z-table>
-			</view>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{heightHtml}}
-
-					js代码:
-					heightTableData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					}],
-					heightColumns: [{
-					title: "姓名",
-					key: "name",
-					width: 100
-					},{
-					title: "性别",
-					key: "gender",
-					width: 100
-					},{
-					title: "年龄",
-					key: "age",
-					width: 100
-					}]
-				</text>
-			</scroll-view>
-			<view class="example-explain">
-				<view class="explain-title">参数</view>
-				<view class="explain-context">
-					<view class="explain">其他参数一样</view>
-					<view class="explain">tableHeight [Number] <text class="explain-text">表格的高度超出会开启滚动,(实测谷歌亲儿子机型可能会出现下拉触发整个页面下拉刷新的问题)</text></view>
-				</view>
-			</view>
-		</view>
-		<view class="example-block">
-			<view class="example-title block-title">开启排序示例</view>
-			<view class="table">
-				<z-table :tableData="sortTableData" :columns="sortColumns" @onSort="doSort"></z-table>
-			</view>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{sortHtml}}
-
-					js代码:
-					sortTableData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					}],
-
-					sortColumns: [{
-					title: "姓名",
-					key: "name",
-					width: 100
-					},{
-					title: "性别",
-					key: "gender",
-					sort: true,
-					width: 100
-					},{
-					title: "年龄",
-					key: "age",
-					sort: true,
-					width: 100
-					}]
-				</text>
-			</scroll-view>
-			<view class="example-explain">
-				<view class="explain-title">参数</view>
-				<view class="explain-context">
-					<view class="explain">sort [Boolean] <text class="explain-text">开启排序</text></view>
 				</view>
 				<view class="explain-title">回调事件</view>
 				<view class="explain-context">
@@ -591,6 +96,9 @@
 							}
 							最终排序需要到外部自行实现
 						</text></view>
+					<view class="explain">onSelect [Function] <text class="explain-text">当选择时触发选中的数据下标的数组 [Array]:
+							数组存放对应tableData中的数据的下标
+						</text></view>
 				</view>
 				<view class="explain-title">事件</view>
 				<view class="explain-context">
@@ -598,68 +106,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="example-block">
-			<view class="example-title block-title">开启选择功能</view>
-			<view class="table">
-				<z-table showSelect :singleSelect="singleSelect" :tableData="selectData" :columns="selectColumns" @onSelect="tableSelect"></z-table>
-			</view>
-			<button class="select-btn" type="primary" @click="singleSelect = !singleSelect">{{ !singleSelect ? '开启单选' : '开启多选' }}</button>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{selectHtml}}
-
-					js代码:
-					selectData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					},
-					...
-					],
-
-					selectColumns: [{
-					title: "姓名",
-					key: "name",
-					width: 300
-					},{
-					title: "性别",
-					key: "gender",
-					width: 300
-					},{
-					title: "年龄",
-					key: "age",
-					width: 300
-					}]
-				</text>
-			</scroll-view>
-			<view class="example-explain">
-				<view class="explain-title">参数</view>
-				<view class="explain-context">
-					<view class="explain">showSelect [Boolean] <text class="explain-text">开启选择</text></view>
-					<view class="explain">singleSelect [Boolean] <text class="explain-text">是否单选，默认false</text></view>
-				</view>
-				<view class="explain-title">回调事件</view>
-				<view class="explain-context">
-					<view class="explain">onSelect [Function] <text class="explain-text">当选择时触发选中的数据下标的数组 [Array]:
-							数组存放对应tableData中的数据的下标
-						</text></view>
-				</view>
-			</view>
-		</view>
+		
 		<view class="example-block">
 			<view class="example-title block-title">开启点击事件</view>
 			<view class="table">
@@ -735,6 +182,7 @@
 				nowType: 0,
 				nowData: false,
 				nowColumn: false,
+				nowHtml: '',
 				selectContent: [
 					{
 						id: 'f0',
@@ -748,6 +196,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: true ,// 开启选择功能
+						html: 'finaleHtml'
 					},
 					{
 						id: 'f1',
@@ -761,6 +210,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'baseHtml'
 					},
 					{
 						id: 'f2',
@@ -774,6 +224,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'stickSideHtml'
 					},
 					{
 						id: 'f3',
@@ -787,6 +238,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'showBottomSumHtml'
 					},
 					{
 						id: 'f4',
@@ -800,6 +252,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'customHtml'
 					},
 					{
 						id: 'f5',
@@ -813,6 +266,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'isLinkHtml'
 					},
 					{
 						id: 'f6',
@@ -826,6 +280,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'emptyHtml'
 					},
 					{
 						id: 'f7',
@@ -839,6 +294,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: 200, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'alignHtml'
 					},
 					{
 						id: 'f8',
@@ -852,6 +308,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'sortHtml'
 					},
 					{
 						id: 'f9'
@@ -865,6 +322,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: true ,// 开启选择功能
+						html: 'selectHtml'
 					},
 					{
 						id: 'f10',
@@ -878,6 +336,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'clickHtml'
 					},
 					{
 						id: 'f11',
@@ -891,6 +350,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'alignHtml'
 					},
 					{
 						id: 'f12',
@@ -904,6 +364,7 @@
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
+						html: 'customTitleHtml'
 					}
 				],
 				baseTableData: [{
@@ -1450,6 +911,8 @@
 			setTable() {
 				this.nowData = this.$data[this.selectContent[this.nowType].tableData]
 				this.nowColumn = this.$data[this.selectContent[this.nowType].columns]
+				this.nowHtml = this.$data[this.selectContent[this.nowType].html]
+				console.log(this.nowHtml)
 			},
 			debounce(fn, time = 1000) {
 				let timer = null
