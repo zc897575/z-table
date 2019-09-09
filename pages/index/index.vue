@@ -51,31 +51,34 @@
 			<view class="example-explain">
 				<view class="explain-title">参数</view>
 				<view class="explain-context">
-					<view class="explain">tableData [Array] <text class="explain-text">需要展示的数据</text></view>
-					<view class="explain">columns [Array] <text class="explain-text">表格列的配置描述</text></view>
+					<view class="explain">tableData [Array | Boolean] <text class="explain-text">需要展示的数据, 为flase时展示loading</text></view>
+					<view class="explain">columns [Array | Boolean] <text class="explain-text">表格列的配置描述, 为flase时展示loading</text></view>
 					<view class="explain">stickSide [Boolean] <text class="explain-text">是否固定左侧第一列</text></view>
 					<view class="explain">showBottomSum [Boolean] <text class="explain-text">是否显示底部统计行</text></view>
-					<view class="explain">showLoading [Boolean] <text class="explain-text">对于第一次渲染表格时显示正在加载</text></view>
+					<view class="explain">showLoading [Boolean] <text class="explain-text">对于第一次渲染表格时显示正在加载不显示为空提示</text></view>
 					<view class="explain">emptyText [String] <text class="explain-text">空数据显示的文字内容, 默认:暂无数据</text></view>
 					<view class="explain">tableHeight [Number] <text class="explain-text">表格的高度超出会开启滚动,(实测谷歌亲儿子机型可能会出现下拉触发整个页面下拉刷新的问题)</text></view>
 					<view class="explain">showSelect [Boolean] <text class="explain-text">开启选择</text></view>
 					<view class="explain">singleSelect [Boolean] <text class="explain-text">是否单选，默认false</text></view>
+					<view class="explain">textAlign [String] <text class="explain-text">单元格内的内容对齐方式[left|center|right]</text></view>
+					<view class="explain">titleTextAlign [String] <text class="explain-text">表头内的内容对齐方式[left|center|right]</text></view>
 				</view>
 				<view class="explain-title">columns具体参数</view>
 				<view class="explain-context">
-					<view class="explain">title [String] <text class="explain-text">列名</text></view>
+					<view class="explain">title [String] <text class="explain-text">列名可以是html字符串模版</text></view>
 					<view class="explain">key [String] <text class="explain-text">对应tableData中的字段名</text></view>
 					<view class="explain">width [Number] <text class="explain-text">列宽(如果不给列宽会出现列宽不一致的问题)</text></view>
 					<view class="explain">
 						columns中的key替换为format
 					</view>
 					<view class="explain">format [Object] <text class="explain-text">自定义内容</text></view>
+					<view class="explain">
+						columns中的添加参数isLink
+					</view>
+					<view class="explain">isLink [Object] <text class="explain-text">单元格为链接的数据</text></view>
+					<view class="explain">sort [Boolean] <text class="explain-text">开启排序</text></view>
+					<view class="explain">listenerClick [Boolean] <text class="explain-text">开启当前列的点击事件</text></view>
 				</view>
-				<view class="explain">
-					columns中的添加参数isLink
-				</view>
-				<view class="explain">isLink [Object] <text class="explain-text">单元格为链接的数据</text></view>
-				<view class="explain">sort [Boolean] <text class="explain-text">开启排序</text></view>
 				<view class="explain-title">format具体参数</view>
 				<view class="explain-context">
 					<view class="explain">template [String] <text class="explain-text">自定义内容模版需要用到tableData中的字段时用#key#(key是字段名)来替换</text></view>
@@ -99,6 +102,9 @@
 					<view class="explain">onSelect [Function] <text class="explain-text">当选择时触发选中的数据下标的数组 [Array]:
 							数组存放对应tableData中的数据的下标
 						</text></view>
+					<view class="explain">onClick [Function] <text class="explain-text">点击事件触发 [object]:
+							点击事件触发的行对象数据
+						</text></view>
 				</view>
 				<view class="explain-title">事件</view>
 				<view class="explain-context">
@@ -106,71 +112,8 @@
 				</view>
 			</view>
 		</view>
-		
-		<view class="example-block">
-			<view class="example-title block-title">开启点击事件</view>
-			<view class="table">
-				<z-table :tableData="clickData" :columns="clickColumns" @onClick="rowClick"></z-table>
-			</view>
-			<view class="example-title">code:</view>
-			<scroll-view scroll-x class="codes">
-				<text space="ensp">
-					html代码:
-					{{clickHtml}}
-
-					js代码:
-					clickData: [{
-					name: "张三",
-					age: 18,
-					gender: "男"
-					},{
-					name: "赵四",
-					age: 16,
-					gender: "女"
-					},{
-					name: "王五",
-					age: 20,
-					gender: "男"
-					},{
-					name: "李六",
-					age: 18,
-					gender: "女"
-					},
-					...
-					],
-
-					clickColumns: [{
-					title: "姓名",
-					key: "name",
-					width: 300
-					},{
-					title: "性别",
-					key: "gender",
-					width: 300,
-					listenerClick: true
-					},{
-					title: "年龄",
-					key: "age",
-					width: 300
-					}]
-				</text>
-			</scroll-view>
-			<view class="example-explain">
-				<view class="explain-title">columns列表配置</view>
-				<view class="explain-context">
-					<view class="explain">listenerClick [Boolean] <text class="explain-text">开启当前列的点击事件</text></view>
-				</view>
-				<view class="explain-title">回调事件</view>
-				<view class="explain-context">
-					<view class="explain">onClick [Function] <text class="explain-text">点击事件触发 [object]:
-							点击事件触发的行对象数据
-						</text></view>
-				</view>
-			</view>
-		</view>
 	</view>
 </template>
-
 <script>
 	import zTable from "../../components/z-table/z-table.vue";
 
@@ -194,7 +137,7 @@
 						stickSide: true, // 左侧固定
 						showBottomSum: true, // 底部显示统计
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
-						tableHeight: false, // 表格高度
+						tableHeight: 500, // 表格高度
 						showSelect: true ,// 开启选择功能
 						html: 'finaleHtml'
 					},
@@ -708,7 +651,7 @@
 					}
 				],
 				finaleColumns: [{
-						title: "姓名",
+						title: '<span style="color: #333"><span style="display: inline-block; width: 10px; height: 10px; line-height: 10px; margin-right: 5px; border: solid 1px #000; border-radius: 50%; font-size: 11px; text-align: center; vertical-align: middle;">!</span><span st yle="vertical-align: middle;">姓名</span></span>',
 						format: {
 							template: "我叫 #name#",
 							names: ["name"]
