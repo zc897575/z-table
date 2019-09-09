@@ -68,8 +68,8 @@
 	/*
 	 * 表格使用
 	 * 注意如果需要异步加载，需要把tableData初始值设为false，当没有数据的时候值为空数组
-	 * props: tableData Array | 表格数据
-	 * 		 columns Array | 数据映射表 每列params => title(表头文字), width(每列宽度) [, key(对应tableData的字段名) || format(自定义内容), sort(是否要排序), isLink(是否显示为超链接Object)]
+	 * props: tableData [Array | Boolean] | 表格数据 如果为false则显示loading
+	 * 		 columns [Array | Boolean] | 数据映射表 如果为false则显示loading 每列params => title(表头文字可以是html字符串模版), width(每列宽度) [, key(对应tableData的字段名) || format(自定义内容), sort(是否要排序), isLink(是否显示为超链接Object)]
 	 * 										   format格式: {template: 字符串模版用#key#表示需要被替换的数据,names: 对应template属性内要被替换的内容的key}
 	 * 										   isLink格式: {url: 链接地址, params: 地址带的参数Array[key|value, key|value, ...]每一项都是key和value以'|'链接,如果不带'|'默认键值同名
 	 * 										   listenerClick(是否监听点击事件Boolean)}
@@ -81,6 +81,8 @@
 	 *		 sort Boolean | 开启排序
 	 * 		 showSelect Boolean | 开启选择
 	 *		 singleSelect Boolean | 在开启选择的状态下是否开起单选
+	 * 		 textAlign String | 内容对齐方式 left center right
+	 * 		 titleTextAlign String | 表头对齐方式 left center right
 	 *
 	 * event: onSort | 排序事件 返回{key: 被排序列的字段名, type: 正序'asc'/倒序'desc'}
 	 *		  onSelect | 选中时触发 返回选择的行的下标
