@@ -126,12 +126,13 @@
 				nowData: false,
 				nowColumn: false,
 				nowHtml: '',
+				myDebounce: this.debounce(this.setTable),
 				selectContent: [
 					{
 						id: 'f0',
 						name: '开启所有的功能', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'finaleTableData', // 表格数据
 						columns: 'finaleColumns', // 表格列内容
 						stickSide: true, // 左侧固定
@@ -144,8 +145,8 @@
 					{
 						id: 'f1',
 						name: '基础使用示例', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'baseTableData', // 表格数据
 						columns: 'baseColumns', // 表格列内容
 						stickSide: false, // 左侧固定
@@ -158,8 +159,8 @@
 					{
 						id: 'f2',
 						name: '左侧固定', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'stickSideTableData', // 表格数据
 						columns: 'stickSideColumns', // 表格列内容
 						stickSide: true, // 左侧固定
@@ -172,8 +173,8 @@
 					{
 						id: 'f3',
 						name: '显示底部统计', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'showBottomSumTableData', // 表格数据
 						columns: 'showBottomSumColumns', // 表格列内容
 						stickSide: false, // 左侧固定
@@ -186,8 +187,8 @@
 					{
 						id: 'f4',
 						name: '自定义内容', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'customTableData', // 表格数据
 						columns: 'customColumns', // 表格列内容
 						stickSide: false, // 左侧固定
@@ -200,8 +201,8 @@
 					{
 						id: 'f5',
 						name: '单元格内容为链接', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'isLinkTableData', // 表格数据
 						columns: 'isLinkColumns', // 表格列内容
 						stickSide: false, // 左侧固定
@@ -214,8 +215,8 @@
 					{
 						id: 'f6',
 						name: '自定义判空显示内容', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'emptyTableData', // 表格数据
 						columns: 'emptyColumns', // 表格列内容
 						stickSide: false, // 左侧固定
@@ -228,8 +229,8 @@
 					{
 						id: 'f7',
 						name: '自定义高度', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'heightTableData', // 表格数据
 						columns: 'heightColumns', // 表格列内容
 						stickSide: false, // 左侧固定
@@ -242,8 +243,8 @@
 					{
 						id: 'f8',
 						name: '开启排序', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'sortTableData', // 表格数据
 						columns: 'sortColumns', // 表格列内容
 						stickSide: false, // 左侧固定
@@ -256,8 +257,8 @@
 					{
 						id: 'f9'
 ,						name: '开启选择', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'selectData', // 表格数据
 						columns: 'selectColumns', // 表格列内容
 						stickSide: false, // 左侧固定
@@ -270,8 +271,8 @@
 					{
 						id: 'f10',
 						name: '开启点击事件', // 功能名
-						textAlign: false, // 内容对齐方式
-						titleTextAlign: false, // 表头对齐方式
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
 						tableData: 'clickData', // 表格数据
 						columns: 'clickColumns', // 表格列内容
 						stickSide: false, // 左侧固定
@@ -308,12 +309,26 @@
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
 						html: 'customTitleHtml'
+					},
+					{
+						id: 'f13',
+						name: '多表头功能', // 功能名
+						textAlign: 'center', // 内容对齐方式
+						titleTextAlign: 'center', // 表头对齐方式
+						tableData: 'multipleTitleTableData', // 表格数据
+						columns: 'multipleTitleColumns', // 表格列内容
+						stickSide: false, // 左侧固定
+						showBottomSum: false, // 底部显示统计
+						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+						tableHeight: false, // 表格高度
+						showSelect: false ,// 开启选择功能
+						html: 'customTitleHtml'
 					}
 				],
 				baseTableData: [{
 						name: "张三",
 						age: 18,
-						gender: "男"
+						gender: ''
 					},
 					{
 						name: "赵四",
@@ -653,14 +668,14 @@
 				finaleColumns: [{
 						title: '<span style="color: #333"><span style="display: inline-block; width: 10px; height: 10px; line-height: 10px; margin-right: 5px; border: solid 1px #000; border-radius: 50%; font-size: 11px; text-align: center; vertical-align: middle;">!</span><span st yle="vertical-align: middle;">姓名</span></span>',
 						format: {
-							template: "我叫 #name#",
+							template: "<span><img src='https://i0.hdslb.com/bfs/face/f81c108b4e7ced4b8e16c9a0d4ee3370e17e12bf.jpg' style='width: 20px;height: 20px; margin-right: 5px; border-radius: 50%;vertical-align: middle;'/><span style='vertical-align: middle;'>我叫 #name#</span>",
 							names: ["name"]
 						},
 						isLink: {
 							url: "https://www.baidu.com",
 							params: ["from|name"]
 						},
-						width: 200
+						width: 300
 					},
 					{
 						title: "性别",
@@ -831,7 +846,45 @@
 					}
 				],
 				customTitleHtml: "<z-table :tableData='customTitleTableData' :columns='customTitleColumns'></z-table>",
-			};
+				multipleTitleTableData: [{
+						name: "张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三,张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三",
+						age: 18,
+						gender: "男"
+					},
+					{
+						name: "赵四",
+						age: 16,
+						gender: "女"
+					},
+					{
+						name: "王五",
+						age: 20,
+						gender: "男"
+					},
+					{
+						name: "李六",
+						age: 18,
+						gender: "女"
+					}
+				],
+				multipleTitleColumns: [{
+						title: '<span style="color: #333"><span style="display: inline-block; width: 10px; height: 10px; line-height: 10px; margin-right: 5px; border: solid 1px #000; border-radius: 50%; font-size: 11px; text-align: center; vertical-align: middle;">!</span><span st yle="vertical-align: middle;">姓名</span></span>',
+						key: 'name',
+						width: 200
+					},
+					{
+						title: '<span style="color: red">性别</span>',
+						key: "gender",
+						width: 400,
+					},
+					{
+						title: '<span style="color: blue">年龄</span>',
+						key: "age",
+						width: 400
+					}
+				],
+				multipleTitleHtml: "<z-table :tableData='multipleTitleTableData' :columns='multipleTitleColumns'></z-table>"
+			}
 		},
 		components: {
 			zTable
@@ -841,10 +894,23 @@
 				handler() {
 					this.nowData = false
 					this.nowColumn = false
-					this.debounce(this.setTable)()
+					this.myDebounce()
 				},
 				immediate: true
 			}
+		},
+		onShow() {
+			let temp = new Array(100)
+			// 性能测试 100条自定义内容带头像
+			for (let i of temp) {
+				console.log(i)
+				this.finaleTableData.push({
+						name: "王五",
+						age: 20,
+						gender: "男"
+					})
+			}
+			console.log(this.finaleTableData)
 		},
 		methods: {
 			changeType(index) {

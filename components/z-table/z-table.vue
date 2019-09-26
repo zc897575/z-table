@@ -30,8 +30,8 @@
 									<view :class="['select-tip', {'selected': selectArr.includes(iIndex)}]"></view>
 								</view>
 								<view :class="['z-table-col-text', {'text-left': textAlign === 'left', 'text-center': textAlign === 'center', 'text-right': textAlign === 'right'}]">
-									<view v-if="!col.isLink">
-										<view v-if="!col.render" v-html="getRowContent(row, col)"></view>
+									<view v-if="!col.isLink" v-html="getRowContent(row, col)">
+										<!-- <view v-if="!col.render" v-html="getRowContent(row, col)"></view> -->
 										<!-- <renderComponents v-else :row="row" :col="col" /> -->
 									</view>
 									<!-- #ifdef H5 -->
@@ -277,7 +277,7 @@
 				//			   params template <String> html字符串模版
 				let tempHTML = ''
 				let rowKey = row[col.key]
-				if (rowKey == 'null') {
+				if ([null, ''].includes(rowKey)) {
 					rowKey = '-'
 				}
 				if (rowKey || rowKey === 0) {
@@ -495,6 +495,7 @@
 		border: solid 2rpx #ccc;
 		font-size: $uni-font-size-sm;
 		box-sizing: border-box;
+		transform: translateZ(0);
 
 		.z-table-main {
 			height: 100%;
@@ -764,6 +765,7 @@
 		// 1.1.1
 		.z-table-col-text {
 			display: flex;
+			width: 100%;
 			flex: 1;
 			justify-content: flex-start;
 			align-content: center;
