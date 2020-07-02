@@ -50,7 +50,7 @@
 						 v-for="(sumCol, sumIndex) in columns" :key="sumIndex">
 							<view class="z-table-bottom-text">
 								<!-- <view v-if="sumIndex != 0" class="z-table-bottom-text-title">{{ sumCol.title }}</view> -->
-								<text :class="{ sum: sumIndex == 0 }">{{ sumIndex == 0 ? '总计' : dosum(sumCol.key) }}</text>
+								<text :class="{ sum: sumIndex == 0 }">{{ sumIndex == 0 ? '总计' : dosum(sumCol) }}</text>
 							</view>
 						</view>
 					</view>
@@ -243,8 +243,9 @@
 						.exec()
 				})
 			},
-			dosum(key) {
+			dosum({key, noSum = false, formatNum = true}) {
 				let sum = '-'
+				if (noSum) return sum
 				if (this.tableData) {
 					if (
 						this.tableData.every(item => {
@@ -267,7 +268,7 @@
 					}
 				}
 				// sum = sum == 0 ? "-" : sum
-				return this.numTransform(sum)
+				return formatNum ? this.numTransform(sum) : sum
 			},
 			getRowContent(row, col) {
 				// 表格值处理函数
@@ -280,8 +281,9 @@
 				if ([null, ''].includes(rowKey)) {
 					rowKey = '-'
 				}
+				let { formatNum = true } = col
 				if (rowKey || rowKey === 0) {
-					tempHTML = isNaN(rowKey - 0) ?
+					tempHTML = isNaN(rowKey - 0) || !formatNum ?
 						rowKey :
 						this.numTransform(rowKey - 0)
 					// tempHTML = tempHTML == 0 ? "-" : tempHTML

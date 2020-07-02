@@ -8,6 +8,9 @@
 			<view class="toggle-btn" @click="showUpData = !showUpData">{{ showUpData ? '隐藏' : '显示' }}更新内容</view>
 			<view v-if="showUpData">
 				<text space="ensp">
+					1.1.3更新内容：
+					新增column配置是否自动格式化数字 {boolean} formateNum 默认为true
+					新增column配置是否不计算总和 {boolean} noSum 默认为false
 					1.1.2更新内容：
 					添加自定义表头columns.title内容可以是html字符串模版，添加表头内容的对齐方式
 					1.1.0更新内容：
@@ -312,18 +315,32 @@
 					},
 					{
 						id: 'f13',
-						name: '多表头功能', // 功能名
-						textAlign: 'center', // 内容对齐方式
-						titleTextAlign: 'center', // 表头对齐方式
-						tableData: 'multipleTitleTableData', // 表格数据
-						columns: 'multipleTitleColumns', // 表格列内容
+						name: '不格式化数字内容', // 功能名
+						textAlign: '', // 内容对齐方式
+						titleTextAlign: '', // 表头对齐方式
+						tableData: 'unformatnumTableData', // 表格数据
+						columns: 'unformatnumColumns', // 表格列内容
 						stickSide: false, // 左侧固定
-						showBottomSum: false, // 底部显示统计
+						showBottomSum: true, // 底部显示统计
 						emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
 						tableHeight: false, // 表格高度
 						showSelect: false ,// 开启选择功能
-						html: 'customTitleHtml'
-					}
+						html: 'unformatnumHtml'
+					},
+					// {
+					// 	id: 'f14',
+					// 	name: '多表头功能', // 功能名
+					// 	textAlign: 'center', // 内容对齐方式
+					// 	titleTextAlign: 'center', // 表头对齐方式
+					// 	tableData: 'multipleTitleTableData', // 表格数据
+					// 	columns: 'multipleTitleColumns', // 表格列内容
+					// 	stickSide: false, // 左侧固定
+					// 	showBottomSum: false, // 底部显示统计
+					// 	emptyText: '设置了showLoading=false才会看到我', // 表格内容为空时显示的内容
+					// 	tableHeight: false, // 表格高度
+					// 	showSelect: false ,// 开启选择功能
+					// 	html: 'customTitleHtml'
+					// },
 				],
 				baseTableData: [{
 						name: "张三",
@@ -846,44 +863,100 @@
 					}
 				],
 				customTitleHtml: "<z-table :tableData='customTitleTableData' :columns='customTitleColumns'></z-table>",
-				multipleTitleTableData: [{
-						name: "张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三,张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三",
+				unformatnumTableData: [{
+						name: "张三",
 						age: 18,
-						gender: "男"
+						gender: '',
+						tel: 13588888888,
+						salary: 15000
 					},
 					{
 						name: "赵四",
 						age: 16,
-						gender: "女"
+						gender: "女",
+						tel: 13566666666,
+						salary: 5000
 					},
 					{
 						name: "王五",
 						age: 20,
-						gender: "男"
+						gender: "男",
+						tel: 13577777777,
+						salary: 22000
 					},
 					{
 						name: "李六",
 						age: 18,
-						gender: "女"
+						gender: "女",
+						tel: 13599999999,
+						salary: 30000
 					}
 				],
-				multipleTitleColumns: [{
-						title: '<span style="color: #333"><span style="display: inline-block; width: 10px; height: 10px; line-height: 10px; margin-right: 5px; border: solid 1px #000; border-radius: 50%; font-size: 11px; text-align: center; vertical-align: middle;">!</span><span st yle="vertical-align: middle;">姓名</span></span>',
-						key: 'name',
-						width: 200
+				unformatnumColumns: [{
+						title: "姓名",
+						key: "name",
+						width: 100
 					},
 					{
-						title: '<span style="color: red">性别</span>',
+						title: "手机号",
+						key: "tel",
+						formatNum: false,
+						noSum: true
+					},
+					{
+						title: "薪资",
+						key: "salary"
+					},
+					{
+						title: "性别",
 						key: "gender",
-						width: 400,
+						width: 400
 					},
 					{
-						title: '<span style="color: blue">年龄</span>',
+						title: "年龄",
 						key: "age",
 						width: 400
 					}
 				],
-				multipleTitleHtml: "<z-table :tableData='multipleTitleTableData' :columns='multipleTitleColumns'></z-table>"
+				unformatnumHtml: "<z-table :tableData='unformatnumTableData' :columns='unformatnumColumns'></z-table>",
+				// multipleTitleTableData: [{
+				// 		name: "张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三,张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三",
+				// 		age: 18,
+				// 		gender: "男"
+				// 	},
+				// 	{
+				// 		name: "赵四",
+				// 		age: 16,
+				// 		gender: "女"
+				// 	},
+				// 	{
+				// 		name: "王五",
+				// 		age: 20,
+				// 		gender: "男"
+				// 	},
+				// 	{
+				// 		name: "李六",
+				// 		age: 18,
+				// 		gender: "女"
+				// 	}
+				// ],
+				// multipleTitleColumns: [{
+				// 		title: '<span style="color: #333"><span style="display: inline-block; width: 10px; height: 10px; line-height: 10px; margin-right: 5px; border: solid 1px #000; border-radius: 50%; font-size: 11px; text-align: center; vertical-align: middle;">!</span><span st yle="vertical-align: middle;">姓名</span></span>',
+				// 		key: 'name',
+				// 		width: 200
+				// 	},
+				// 	{
+				// 		title: '<span style="color: red">性别</span>',
+				// 		key: "gender",
+				// 		width: 400,
+				// 	},
+				// 	{
+				// 		title: '<span style="color: blue">年龄</span>',
+				// 		key: "age",
+				// 		width: 400
+				// 	}
+				// ],
+				// multipleTitleHtml: "<z-table :tableData='multipleTitleTableData' :columns='multipleTitleColumns'></z-table>"
 			}
 		},
 		components: {
@@ -903,14 +976,12 @@
 			let temp = new Array(100)
 			// 性能测试 100条自定义内容带头像
 			for (let i of temp) {
-				console.log(i)
 				this.finaleTableData.push({
 						name: "王五",
 						age: 20,
 						gender: "男"
 					})
 			}
-			console.log(this.finaleTableData)
 		},
 		methods: {
 			changeType(index) {
@@ -921,7 +992,7 @@
 				this.nowData = this.$data[this.selectContent[this.nowType].tableData]
 				this.nowColumn = this.$data[this.selectContent[this.nowType].columns]
 				this.nowHtml = this.$data[this.selectContent[this.nowType].html]
-				console.log(this.nowHtml)
+				// console.log(this.nowHtml)
 			},
 			debounce(fn, time = 1000) {
 				let timer = null
