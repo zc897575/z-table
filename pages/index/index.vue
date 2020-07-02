@@ -81,6 +81,8 @@
 					<view class="explain">isLink [Object] <text class="explain-text">单元格为链接的数据</text></view>
 					<view class="explain">sort [Boolean] <text class="explain-text">开启排序</text></view>
 					<view class="explain">listenerClick [Boolean] <text class="explain-text">开启当前列的点击事件</text></view>
+					<view class="explain">formateNum [Boolean] <text class="explain-text">是否自动格式化数字 默认为true</text></view>
+					<view class="explain">noSum [Boolean] <text class="explain-text">是否不计算总和 默认为false</text></view>
 				</view>
 				<view class="explain-title">format具体参数</view>
 				<view class="explain-context">

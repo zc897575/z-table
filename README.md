@@ -5,9 +5,29 @@ uni-app的表格插件
 ### 表格使用
 #### props: 
 ##### tableData [Array | Boolean] | 表格数据 如果为false则显示loading
-##### columns [Array | Boolean] | 数据映射表 如果为false则显示loading 每列params => title(表头文字), width(每列宽度) [, key(对应tableData的字段名) || format(自定义内容), sort(是否要排序), isLink(是否显示为超链接Object)，listenerClick(是否监听点击事件Boolean)]
-##### format格式: {template: 字符串模版用#key#表示需要被替换的数据,names: 对应template属性内要被替换的内容的key}
-##### isLink格式: {url: 链接地址, params: 地址带的参数Array[key|value, key|value, ...]每一项都是key和value以'|'链接,如果不带'|'默认键值同名}
+##### columns [Array | Boolean] | 数据映射表 如果为false则显示loading 
+params|类型|说明|默认值
+---|---|---|---
+title|String|表头文字|-
+width|Number|每列宽度|内容宽度
+key|String|对应tableData的字段名|-
+format|Object|自定义内容|-
+sort|Boolean|是否要排序|false
+isLink|Object|是否显示为超链接|undefind
+listenerClick|Boolean|是否监听点击事件|false
+formateNum|Boolean|是否自动格式化数字|true
+noSum|Boolean|设置showBottomSum时是否不计算总和|false
+##### format格式:
+params|类型|说明
+---|---|---
+template|String|字符串模版用 #key# 表示需要被替换的数据
+names|Array[String]|对应template的要被替换内容的key
+##### isLink格式: 
+params|类型|说明
+---|---|---
+url|String|链接地址
+params|Array[String]|地址带的参数Array[key`|`value, key`|`value, ...]，每一项都是key和value以'`|`'链接,如果不带'`|`'默认键值同名
+
 ##### stickSide Boolean | 是否固定右侧首栏 默认不显示
 ##### showBottomSum Boolean | 是否显示底部统计 默认不显示
 ##### showLoading Boolean | 是否首次加载首次加载不显示暂无数据内容
@@ -29,4 +49,4 @@ uni-app的表格插件
 ##### resetSort | 调用后重置排序 *注意:不会触发sort事件
 
 ### 效果预览
-![小程序二维码](https://github.com/zc897575/z-table/blob/master/static/zTable.jpg)
+![小程序二维码](https://wx2.sinaimg.cn/mw690/72f899dcgy1ggd09xhjvzj20760760tu.jpg)
