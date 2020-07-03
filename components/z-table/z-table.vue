@@ -97,7 +97,7 @@
 	export default {
 		data() {
 			return {
-				version: '1.1.0',
+				version: '1.1.3',
 				nowSortKey: '',
 				sortType: 'desc', // asc/desc 升序/降序
 				longTable: true,
