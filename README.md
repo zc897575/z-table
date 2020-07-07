@@ -15,7 +15,7 @@ format|Object|自定义内容|-
 sort|Boolean|是否要排序|false
 isLink|Object|是否显示为超链接|undefind
 listenerClick|Boolean|是否监听点击事件|false
-formateNum|Boolean|是否自动格式化数字|true
+formatNum|Boolean|是否自动格式化数字|true
 noSum|Boolean|设置showBottomSum时是否不计算总和|false
 ##### format格式:
 params|类型|说明

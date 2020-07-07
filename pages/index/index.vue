@@ -9,7 +9,7 @@
 			<view v-if="showUpData">
 				<text space="ensp">
 					1.1.3更新内容：
-					新增column配置是否自动格式化数字 {boolean} formateNum 默认为true
+					新增column配置是否自动格式化数字 {boolean} formatNum 默认为true
 					新增column配置是否不计算总和 {boolean} noSum 默认为false
 					1.1.2更新内容：
 					添加自定义表头columns.title内容可以是html字符串模版，添加表头内容的对齐方式
@@ -81,7 +81,7 @@
 					<view class="explain">isLink [Object] <text class="explain-text">单元格为链接的数据</text></view>
 					<view class="explain">sort [Boolean] <text class="explain-text">开启排序</text></view>
 					<view class="explain">listenerClick [Boolean] <text class="explain-text">开启当前列的点击事件</text></view>
-					<view class="explain">formateNum [Boolean] <text class="explain-text">是否自动格式化数字 默认为true</text></view>
+					<view class="explain">formatNum [Boolean] <text class="explain-text">是否自动格式化数字 默认为true</text></view>
 					<view class="explain">noSum [Boolean] <text class="explain-text">是否不计算总和 默认为false</text></view>
 				</view>
 				<view class="explain-title">format具体参数</view>
