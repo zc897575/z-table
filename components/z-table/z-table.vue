@@ -618,6 +618,7 @@
 				margin-left: 14rpx;
 				font-size: 28rpx;
 				box-sizing: border-box;
+				white-space: nowrap;
 			}
 		}
 
