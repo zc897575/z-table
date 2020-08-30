@@ -13,7 +13,7 @@
 								<view :class="['select-tip', {'selected': selectAll}]"></view>
 							</view>
 							<view :class="['z-table-col-text', {'text-left': titleTextAlign === 'left', 'text-center': titleTextAlign === 'center', 'text-right': titleTextAlign === 'right'}]">
-								<view v-html="getTitleText(item.title)"></view>
+								<rich-text :nodes="getTitleText(item.title)"></rich-text>
 								<view v-if="item.hasOwnProperty('key') && item.hasOwnProperty('sort') && tableData.length" class="sort">
 									<view class="up-arrow" :class="{ action: nowSortKey == item.key && sortType == 'asc' }"></view>
 									<view class="down-arrow" :class="{ action: nowSortKey == item.key && sortType == 'desc' }"></view>
@@ -30,16 +30,19 @@
 									<view :class="['select-tip', {'selected': selectArr.includes(iIndex)}]"></view>
 								</view>
 								<view :class="['z-table-col-text', {'text-left': textAlign === 'left', 'text-center': textAlign === 'center', 'text-right': textAlign === 'right'}]">
-									<view v-if="!col.isLink" v-html="getRowContent(row, col)">
-										<!-- <view v-if="!col.render" v-html="getRowContent(row, col)"></view> -->
-										<!-- <renderComponents v-else :row="row" :col="col" /> -->
-									</view>
+									<!--view v-if="!col.isLink" v-html="getRowContent(row, col)">
+										<<view v-if="!col.render" v-html="getRowContent(row, col)"></view>>
+										<<renderComponents v-else :row="row" :col="col" />>
+									</view-->
+									<rich-text v-if="!col.isLink" :nodes="getRowContent(row, col)"></rich-text>
 									<!-- #ifdef H5 -->
 									<router-link v-else-if="setUrl(row, col).indexOf('http') != 0" :to="setUrl(row, col)" v-html="getRowContent(row, col)"></router-link>
 									<a v-else-if="col.isLink" :href="setUrl(row, col)" v-html="getRowContent(row, col)"></a>
 									<!-- #endif -->
 									<!-- #ifndef H5 -->
-									<navigator v-else-if="col.isLink" :url="setUrl(row, col)" v-html="getRowContent(row, col)"></navigator>
+									<navigator v-else-if="col.isLink" :url="setUrl(row, col)">
+										<rich-text :nodes="getRowContent(row, col)"></rich-text>
+									</navigator>
 									<!-- #endif -->
 								</view>
 							</view>
@@ -92,8 +95,9 @@
 	 *
 	 * */
 	import Vue from 'vue'
+	import acceptNodes from './acceptNodes.js'
 	// import tableRender from './table-render'
-
+	
 	export default {
 		data() {
 			return {
@@ -298,8 +302,11 @@
 					let error = new Error('数据的key或format值至少一个不为空')
 					throw error
 				}
-				// console.log(tempHTML)
+				// #ifdef APP-VUE || H5
 				return tempHTML.toString()
+				// #endif
+				// 其他平台需要转为抽象树格式
+				return this.praseNode(tempHTML.toString())
 			},
 			sort(key, index) {
 				if (!key || !this.columns[index].sort) {
@@ -414,8 +421,49 @@
 			getTitleText(title) {
 				// 自定义表头
 				let tempHTML = title
+				// #ifdef APP-VUE || H5
 				return tempHTML.toString()
-			}
+				// #endif
+				// 其他平台需要转为抽象树格式
+				return this.praseNode(tempHTML.toString())
+			},
+			// v1.1.4
+			praseNode(strHTML) {
+				let prase = new DOMParser()
+				console.log(prase.parseFromString(strHTML, 'text/xml'))
+				// 将字符串类型的html转为抽象树
+				let nodes = [],
+					abstractNode = [],
+					nodeStartRge = new RegExp("(\<\\w+\\s?\>)", 'g'),
+					nodeEndRge = new RegExp("(\<\/\\w+\>)", 'g')
+				
+				
+				if (!nodes.length) {
+					throw Error("html转抽象树内容不能为空！")
+				}
+				
+				abstractNode = getNode(nodes)
+				
+				function getNode(node) {
+					let tempNodes = []
+
+					
+					return tempNodes
+				}
+				
+				return abstractNode
+				return [{
+					name: 'div',
+					attrs: {
+						class: 'div-class',
+						style: 'line-height: 60px; color: red; text-align:center;'
+					},
+					children: [{
+						type: 'text',
+						text: 'Hello&nbsp;uni-app!'
+					}]
+				}]
+			},
 		}
 	}
 </script>
