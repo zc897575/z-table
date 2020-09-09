@@ -429,41 +429,54 @@
 			},
 			// v1.1.4
 			praseNode(strHTML) {
-				let prase = new DOMParser()
-				console.log(prase.parseFromString(strHTML, 'text/xml'))
+				console.log(createElement)
+				let prase = new DOMParser()				
 				// 将字符串类型的html转为抽象树
-				let nodes = [],
-					abstractNode = [],
-					nodeStartRge = new RegExp("(\<\\w+\\s?\>)", 'g'),
-					nodeEndRge = new RegExp("(\<\/\\w+\>)", 'g')
-				
-				
-				if (!nodes.length) {
-					throw Error("html转抽象树内容不能为空！")
+				let nodes = prase.parseFromString(strHTML, 'text/html'),
+					abstractNode = []
+				if (!nodes instanceof HTMLDocument) {
+					throw Error("转义错误！")
 				}
-				
-				abstractNode = getNode(nodes)
+				abstractNode = getNode(nodes.body)
 				
 				function getNode(node) {
-					let tempNodes = []
-
+					let tempNodes = [],
+						{ children } = node
+					if (children.length == 0) {
+						if (node.innerHTML) {
+							tempNodes.push({
+								type: 'text',
+								text: node.innerHTML
+							})
+						}
+					} else {
+						for(let item of children) {
+							// console.log(item)
+							let attributes = {}
+							// 将attr转为键值对
+							Array.from(item.attributes).map(i => {
+								return {
+									[i.name]: i.value
+								}
+							}).forEach(i => {
+								Object.assign(attributes, i)
+							})
+							tempNodes.push({
+								name: item.nodeName.toLowerCase(),
+								attrs: attributes,
+								children: getNode(item)
+							})
+						}
+					}
 					
 					return tempNodes
 				}
 				
 				return abstractNode
-				return [{
-					name: 'div',
-					attrs: {
-						class: 'div-class',
-						style: 'line-height: 60px; color: red; text-align:center;'
-					},
-					children: [{
-						type: 'text',
-						text: 'Hello&nbsp;uni-app!'
-					}]
-				}]
 			},
+			DOMPareser(str) {
+				let startReg = new RegExp('(^\<\>$)', 'g')
+			}
 		}
 	}
 </script>
