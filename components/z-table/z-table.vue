@@ -95,7 +95,7 @@
 	 *
 	 * */
 	import Vue from 'vue'
-	import acceptNodes from './acceptNodes.js'
+	import acceptWords from './acceptWords.js'
 	// import tableRender from './table-render'
 	
 	export default {
@@ -429,50 +429,91 @@
 			},
 			// v1.1.4
 			praseNode(strHTML) {
-				console.log(createElement)
-				let prase = new DOMParser()				
-				// 将字符串类型的html转为抽象树
-				let nodes = prase.parseFromString(strHTML, 'text/html'),
-					abstractNode = []
-				if (!nodes instanceof HTMLDocument) {
-					throw Error("转义错误！")
+				let lineRegExp = new RegExp('<.*?>', 'g'),
+					nodeEndRegExp = new RegExp('<\/.*>') // 标签结束符
+				let abstractNode = [],
+					nodes = strHTML.match(lineRegExp), // 获取所有标签的数组集合
+					nodeIndex = 0 // 标签嵌套指示器
+				if (nodes == null) {
+					// 如果不是标签的
+					return [
+						{
+							type: 'text',
+							text: strHTML
+						}
+					]
 				}
-				abstractNode = getNode(nodes.body)
+				getNodeTree()
+				function getNodeTree() {
+					let temp = []
+					nodes.reduce((acc, item) => {
+						// 是否是结束运算符
+						if (nodeEndRegExp.test(item)) {
+							如果是结束运算符则嵌套减1并原样返回
+							nodeIndex--
+						} else {
+						if (nodeIndex == 0) {
+							// 如果已经是最外层嵌套 新建一个容器
+							acc.push({
+								node: item,
+								children: []
+							})
+						}
+						}
+						return acc
+					})
+				}
 				
-				function getNode(node) {
-					let tempNodes = [],
-						{ children } = node
-					if (children.length == 0) {
-						if (node.innerHTML) {
-							tempNodes.push({
-								type: 'text',
-								text: node.innerHTML
-							})
-						}
-					} else {
-						for(let item of children) {
-							// console.log(item)
-							let attributes = {}
-							// 将attr转为键值对
-							Array.from(item.attributes).map(i => {
-								return {
-									[i.name]: i.value
-								}
-							}).forEach(i => {
-								Object.assign(attributes, i)
-							})
-							tempNodes.push({
-								name: item.nodeName.toLowerCase(),
-								attrs: attributes,
-								children: getNode(item)
-							})
-						}
-					}
+				function getName(node) {
 					
-					return tempNodes
 				}
 				
-				return abstractNode
+				function getAttr(node) {
+					
+				}
+				// let prase = new DOMParser()				
+				// // 将字符串类型的html转为抽象树
+				// let nodes = prase.parseFromString(strHTML, 'text/html'),
+				// 	abstractNode = []
+				// if (!nodes instanceof HTMLDocument) {
+				// 	throw Error("转义错误！")
+				// }
+				// abstractNode = getNode(nodes.body)
+				
+				// function getNode(node) {
+				// 	let tempNodes = [],
+				// 		{ children } = node
+				// 	if (children.length == 0) {
+				// 		if (node.innerHTML) {
+				// 			tempNodes.push({
+				// 				type: 'text',
+				// 				text: node.innerHTML
+				// 			})
+				// 		}
+				// 	} else {
+				// 		for(let item of children) {
+				// 			// console.log(item)
+				// 			let attributes = {}
+				// 			// 将attr转为键值对
+				// 			Array.from(item.attributes).map(i => {
+				// 				return {
+				// 					[i.name]: i.value
+				// 				}
+				// 			}).forEach(i => {
+				// 				Object.assign(attributes, i)
+				// 			})
+				// 			tempNodes.push({
+				// 				name: item.nodeName.toLowerCase(),
+				// 				attrs: attributes,
+				// 				children: getNode(item)
+				// 			})
+				// 		}
+				// 	}
+					
+				// 	return tempNodes
+				// }
+				
+				// return abstractNode
 			},
 			DOMPareser(str) {
 				let startReg = new RegExp('(^\<\>$)', 'g')
